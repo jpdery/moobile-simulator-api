@@ -1,0 +1,22 @@
+name: "Moobile-Simulator"
+
+exports: "moobile-simulator.js"
+
+web: "[mootools.net](http://mootools.net)"
+
+description: "Moobile Simulator API"
+
+license: "[MIT License](http://mootools.net/license.txt)"
+
+copyright: "&copy; Jean-Philippe Dery (jeanphilippe.dery@gmail.com)"
+
+authors: "Jean-Philippe Dery (jeanphilippe.dery@gmail.com)"
+
+sources:
+
+  - "Source/Device/Device.js"
+  - "Source/Device/Device.iPad.js"
+  - "Source/Device/Device.iPhone.js"
+  - "Source/Event/Event.CSS3.js"
+  - "Source/Element/Element.Style.Vendor.js"
+  - "Source/Simulator/Simulator.js"

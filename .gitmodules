@@ -1,0 +1,9 @@
+[submodule "Packager"]
+	path = Packager
+	url = https://github.com/kamicane/packager.git
+[submodule "Vendor/mootools-custom-event"]
+	path = Vendor/mootools-custom-event
+	url = https://github.com/cpojer/mootools-custom-event.git
+[submodule "Vendor/mootools-class-extras"]
+	path = Vendor/mootools-class-extras
+	url = https://github.com/cpojer/mootools-class-extras.git
