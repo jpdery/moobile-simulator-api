@@ -11,7 +11,7 @@ author:
 	- Jean-Philippe Dery (jeanphilippe.dery@gmail.com)
 
 requires:
-	- Device
+	- Device.iPhone
 
 provides:
 	- Device.iPad
@@ -21,8 +21,15 @@ provides:
 
 Moobile.Simulator.Device['iPad'] = new Class({
 
-	Extends: Moobile.Simulator.Device,
+	Extends: Moobile.Simulator.Device.iPhone,
 
-
+	/**
+	 * @author Jean-Philippe Dery (jeanphilippe.dery@gmail.com)
+	 * @since  0.1
+	 */
+	decorate: function(element, display, content, iframe) {
+		this.parent(element, display, content, iframe);
+		this.loadCSS('iPad/styles.css');
+	}
 
 });

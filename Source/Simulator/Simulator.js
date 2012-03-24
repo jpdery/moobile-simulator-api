@@ -69,12 +69,6 @@ Moobile.Simulator = new Class({
 	 * @author Jean-Philippe Dery (jeanphilippe.dery@gmail.com)
 	 * @since  0.1
 	 */
-	wrapper: null,
-
-	/**
-	 * @author Jean-Philippe Dery (jeanphilippe.dery@gmail.com)
-	 * @since  0.1
-	 */
 	element: null,
 
 	/**
@@ -115,7 +109,7 @@ Moobile.Simulator = new Class({
 
 		this.setOptions(options);
 
-		this.wrapper = document.id(this.options.container) || document.body;
+		var parent = document.id(this.options.container) || document.body;
 
 		this.element =
 			new Element('div.simulator').adopt([
@@ -124,7 +118,7 @@ Moobile.Simulator = new Class({
 						new Element('iframe')
 					])
 				])
-			]).inject(this.wrapper);
+			]).inject(parent);
 
 		this.display = this.element.getElement('div.simulator-display');
 		this.content = this.element.getElement('div.simulator-content');
