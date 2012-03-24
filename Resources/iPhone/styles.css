@@ -33,8 +33,8 @@ body {
 	width: 382px;
 }
 
-.simulator .simulator-glare {
-	background: url(simulator-glare.png); /* Must be here, FF11 */
+.simulator .simulator-display-glare {
+	background: url(iphone-glare.png); /* Must be here, FF11 */
 	-webkit-background-size: 360px 726px;
 	   -moz-background-size: 360px 726px;
 	        background-size: 360px 726px;
@@ -110,6 +110,9 @@ body {
 
 .simulator .simulator-status-bar {
 	background: url(status-bar.png) repeat-x;
+	-webkit-background-size: 320px 20px;
+	   -moz-background-size: 320px 20px;
+	        background-size: 320px 20px;
 	color: #000000;
 	display: block;
 	font-size: 14px;
@@ -141,6 +144,9 @@ body {
 
 .simulator .simulator-status-bar-network {
 	background: url(status-bar-network.png) no-repeat center left;
+	-webkit-background-size: 50px 20px;
+	   -moz-background-size: 50px 20px;
+	        background-size: 50px 20px;
 	font-size: 13px;
 	left: 4px;
 	padding-left: 21px;
@@ -152,6 +158,9 @@ body {
 
 .simulator .simulator-status-bar-battery {
 	background: url(status-bar-battery.png) no-repeat center right;
+	-webkit-background-size: 38px 20px;
+	   -moz-background-size: 38px 20px;
+	        background-size: 38px 20px;
 	right: 3px;
 }
 
@@ -174,10 +183,16 @@ body {
 
 .simulator.portrait .button-bar {
 	background: url(button-bar-portrait.png);
+	-webkit-background-size: 320px 44px;
+	   -moz-background-size: 320px 44px;
+	        background-size: 320px 44px;
 }
 
 .simulator.landscape .button-bar {
 	background: url(button-bar-landscape.png);
+	-webkit-background-size: 480px 44px;
+	   -moz-background-size: 480px 44px;
+	        background-size: 480px 44px;
 }
 
 .simulator.with-button-bar .button-bar {
