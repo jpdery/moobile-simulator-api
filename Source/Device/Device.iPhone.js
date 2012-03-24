@@ -73,7 +73,7 @@ Moobile.Simulator.Device['iPhone'] = new Class({
 	 * @author Jean-Philippe Dery (jeanphilippe.dery@gmail.com)
 	 * @since  0.1
 	 */
-	destroy: function() {
+	teardown: function() {
 		this.glare.destroy();
 		this.statusBar.destroy();
 		this.buttonBar.destroy();
