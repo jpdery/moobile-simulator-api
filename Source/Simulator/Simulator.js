@@ -44,6 +44,13 @@ Moobile.Simulator = new Class({
 	 * @author Jean-Philippe Dery (jeanphilippe.dery@gmail.com)
 	 * @since  0.1
 	 */
+	_deviceName: null,
+
+	/**
+	 * @hidden
+	 * @author Jean-Philippe Dery (jeanphilippe.dery@gmail.com)
+	 * @since  0.1
+	 */
 	_deviceOrientation: null,
 
 	/**
@@ -148,6 +155,10 @@ Moobile.Simulator = new Class({
 		if (this._deviceBeingChanged)
 			return this;
 
+		if (this._deviceName === name)
+			return this;
+
+		this._deviceName = name;
 		this._deviceBeingChanged = true;
 		this._freeDevice();
 		this._loadDevice(name);
@@ -165,26 +176,42 @@ Moobile.Simulator = new Class({
 		if (this._deviceBeingChanged)
 			return this;
 
+		if (this._deviceName === name)
+			return this;
+
+		this._deviceName = name;
 		this._deviceBeingChanged = true;
 
 		var onShowAnimationEnd = function() {
 			this._deviceBeingChanged = false;
 		}.bind(this);
 
+		var rotation = this._deviceOrientation == 'portrait' ? 'rotateZ(0deg)' : 'rotateZ(90deg)';
+
+		var hideAnimation = {
+			'opacity':   [1, 0],
+			'transform': [
+				rotation + ' scale(1.00)',
+				rotation + ' scale(0.75)'
+			]
+		};
+
+		var showAnimation = {
+			'opacity':   [0, 1],
+			'transform': [
+				rotation + ' scale(0.75)',
+				rotation + ' scale(1.00)'
+			]
+		};
+
 		var onHideAnimationEnd = function() {
 			this._freeDevice();
 			this._loadDevice(name);
-			this._animate('transform', [
-				'rotateY(90deg) scale(0.75)',
-				'rotateY(0deg)  scale(1.00)'
-			], onShowAnimationEnd);
+			this._animate(showAnimation, onShowAnimationEnd);
 		}.bind(this);
 
 		if (this._device) {
-			this._animate('transform', [
-				'rotateY(0deg)   scale(1.00)',
-				'rotateY(-90deg) scale(0.75)'
-			], onHideAnimationEnd);
+			this._animate(hideAnimation, onHideAnimationEnd);
 			return this;
 		}
 
