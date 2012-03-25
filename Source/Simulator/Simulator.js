@@ -61,11 +61,10 @@ Moobile.Simulator = new Class({
 	_devicePixelRatio: null,
 
 	/**
-	 * @hidden
 	 * @author Jean-Philippe Dery (jeanphilippe.dery@gmail.com)
 	 * @since  0.1
 	 */
-	_deviceBeingChanged: false,
+	animating: false,
 
 	/**
 	 * @author Jean-Philippe Dery (jeanphilippe.dery@gmail.com)
@@ -152,19 +151,13 @@ Moobile.Simulator = new Class({
 	 */
 	setDevice: function(name) {
 
-		if (this._deviceBeingChanged)
+		if (this.animating)
 			return this;
 
 		if (this._deviceName === name)
 			return this;
 
-		this._deviceName = name;
-		this._deviceBeingChanged = true;
-		this._freeDevice();
-		this._loadDevice(name);
-		this._deviceBeingChanged = false;
-
-		return this;
+		return this._loadDevice(name);
 	},
 
 	/**
@@ -173,20 +166,13 @@ Moobile.Simulator = new Class({
 	 */
 	setDeviceAnimated: function(name) {
 
-		if (this._deviceBeingChanged)
+		if (this.animating)
 			return this;
 
 		if (this._deviceName === name)
 			return this;
 
-		this._deviceName = name;
-		this._deviceBeingChanged = true;
-
-		var onShowAnimationEnd = function() {
-			this._deviceBeingChanged = false;
-		}.bind(this);
-
-		var rotation = this._deviceOrientation == 'portrait' ? 'rotateZ(0deg)' : 'rotateZ(90deg)';
+		var rotation = this._deviceOrientation == 'portrait' ? 'rotate(0deg)' : 'rotate(90deg)';
 
 		var hideAnimation = {
 			'opacity':   [1, 0],
@@ -204,18 +190,17 @@ Moobile.Simulator = new Class({
 			]
 		};
 
-		var onHideAnimationEnd = function() {
-			this._freeDevice();
+		var animationEnd = function() {
 			this._loadDevice(name);
-			this._animate(showAnimation, onShowAnimationEnd);
+			this._animate(showAnimation);
 		}.bind(this);
 
 		if (this._device) {
-			this._animate(hideAnimation, onHideAnimationEnd);
+			this._animate(hideAnimation, animationEnd);
 			return this;
 		}
 
-		onHideAnimationEnd();
+		animationEnd();
 
 		return this;
 	},
@@ -227,6 +212,13 @@ Moobile.Simulator = new Class({
 	 */
 	_loadDevice: function(name) {
 
+		if (this._device) {
+			this._device.teardown();
+			this._device = null;
+		}
+
+		this._deviceName = name;
+
 		this._device = Moobile.Simulator.Device.create(name, this);
 		this._device.decorate(
 			this.element,
@@ -234,21 +226,6 @@ Moobile.Simulator = new Class({
 			this.content,
 			this.iframe
 		);
-
-		return this;
-	},
-
-	/**
-	 * @hidden
-	 * @author Jean-Philippe Dery (jeanphilippe.dery@gmail.com)
-	 * @since  0.1
-	 */
-	_freeDevice: function() {
-
-		if (this._device) {
-			this._device.teardown();
-			this._device = null;
-		}
 
 		return this;
 	},
@@ -267,6 +244,9 @@ Moobile.Simulator = new Class({
 	 */
 	setDeviceOrientation: function(orientation) {
 
+		if (this.animating)
+			return this;
+
 		if (this._deviceOrientation === orientation)
 			return this;
 
@@ -284,6 +264,9 @@ Moobile.Simulator = new Class({
 	 * @since  0.1
 	 */
 	setDeviceOrientationAnimated: function(orientation) {
+
+		if (this.animating)
+			return this;
 
 		if (this._deviceOrientation === orientation)
 			return this;
@@ -387,6 +370,8 @@ Moobile.Simulator = new Class({
 	 */
 	_animate: function(style, value, callback) {
 
+		this.animating = true;
+
 		var styles = {};
 
 		switch (typeof style) {
@@ -441,6 +426,8 @@ Moobile.Simulator = new Class({
 
 				if (callback) callback();
 
+				this.animating = false;
+
 			}.bind(this));
 
 			this.element.setStyles(t);
@@ -475,6 +462,22 @@ Moobile.Simulator = new Class({
 		this.applicationWindow = this.iframe.contentWindow;
 		this.applicationWindow.orientation = this._deviceOrientation === 'portrait' ? 0 : 90;
 		this.applicationWindow.orientationName = this._deviceOrientation;
+	},
+
+	/**
+	 * @author Jean-Philippe Dery (jeanphilippe.dery@gmail.com)
+	 * @since  0.1
+	 */
+	getAnimationDuration: function() {
+		return this.options.animationDuration;
+	},
+
+	/**
+	 * @author Jean-Philippe Dery (jeanphilippe.dery@gmail.com)
+	 * @since  0.1
+	 */
+	getAnimationTimingFunction: function() {
+		return this.options.animationTimingFunction;
 	},
 
 	/**
