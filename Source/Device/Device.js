@@ -69,6 +69,14 @@ Moobile.Simulator.Device = new Class({
 	 * @author Jean-Philippe Dery (jeanphilippe.dery@gmail.com)
 	 * @since  0.1
 	 */
+	getSize: function() {
+		return {};
+	},
+
+	/**
+	 * @author Jean-Philippe Dery (jeanphilippe.dery@gmail.com)
+	 * @since  0.1
+	 */
 	loadCSS: function(file) {
 		this._resources.push(Asset.css(Moobile.Simulator.getResourcePath() + '/' + file));
 		return this;

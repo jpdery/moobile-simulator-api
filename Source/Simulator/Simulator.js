@@ -157,7 +157,7 @@ Moobile.Simulator = new Class({
 		if (this._deviceName === name)
 			return this;
 
-		return this._loadDevice(name);
+		return this._applyDevice(name);
 	},
 
 	/**
@@ -191,7 +191,7 @@ Moobile.Simulator = new Class({
 		};
 
 		var animationEnd = function() {
-			this._loadDevice(name);
+			this._applyDevice(name);
 			this._animate(showAnimation);
 		}.bind(this);
 
@@ -210,7 +210,7 @@ Moobile.Simulator = new Class({
 	 * @author Jean-Philippe Dery (jeanphilippe.dery@gmail.com)
 	 * @since  0.1
 	 */
-	_loadDevice: function(name) {
+	_applyDevice: function(name) {
 
 		if (this._device) {
 			this._device.teardown();
@@ -227,6 +227,12 @@ Moobile.Simulator = new Class({
 			this.iframe
 		);
 
+		var size = this.getDeviceSize();
+		this.element.setStyle('height', size.y);
+		this.element.setStyle('width', size.x);
+
+		this.fireEvent('devicechange', name);
+
 		return this;
 	},
 
@@ -236,6 +242,14 @@ Moobile.Simulator = new Class({
 	 */
 	getDevice: function() {
 		return this._device;
+	},
+
+	/**
+	 * @author Jean-Philippe Dery (jeanphilippe.dery@gmail.com)
+	 * @since  0.1
+	 */
+	getDeviceSize: function() {
+		return this._device ? this._device.getSize() : {x:0, y:0};
 	},
 
 	/**
@@ -317,6 +331,8 @@ Moobile.Simulator = new Class({
 				this.applicationWindow.fireEvent('rotate', orientation);
 			}
 
+			this.fireEvent('deviceorientationchange', orientation);
+
 		}).delay(5, this);
 
 		return this;
@@ -327,7 +343,7 @@ Moobile.Simulator = new Class({
 	 * @since  0.1
 	 */
 	getDeviceOrientation: function() {
-		// TODO
+		return this._deviceOrientation;
 	},
 
 	/**

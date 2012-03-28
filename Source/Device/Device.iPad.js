@@ -30,6 +30,17 @@ Moobile.Simulator.Device['iPad'] = new Class({
 	decorate: function(element, display, content, iframe) {
 		this.parent(element, display, content, iframe);
 		this.loadCSS('iPad/styles.css');
+	},
+
+	/**
+	 * @author Jean-Philippe Dery (jeanphilippe.dery@gmail.com)
+	 * @since  0.1
+	 */
+	getSize: function() {
+		return {
+			x: 978,
+			y: 1268
+		};
 	}
 
 });

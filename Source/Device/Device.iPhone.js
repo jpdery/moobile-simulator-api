@@ -83,6 +83,17 @@ Moobile.Simulator.Device['iPhone'] = new Class({
 	 * @author Jean-Philippe Dery (jeanphilippe.dery@gmail.com)
 	 * @since  0.1
 	 */
+	getSize: function() {
+		return {
+			x: 382,
+			y: 744
+		};
+	},
+
+	/**
+	 * @author Jean-Philippe Dery (jeanphilippe.dery@gmail.com)
+	 * @since  0.1
+	 */
 	willChangeOrientationAnimated: function(orientation) {
 		this.element.addClass('animate');
 	},
