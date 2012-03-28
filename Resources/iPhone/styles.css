@@ -2,7 +2,10 @@
 -----------------------------------------------------------------------------*/
 
 .simulator {
-	background: url(iphone.png); /* Must be here, FF11 */
+	background: url(iphone.png) no-repeat; /* Must be here, FF11 */
+	-webkit-border-radius: 58px;
+	   -moz-border-radius: 58px;
+	        border-radius: 58px;
 	-webkit-background-size: 382px 744px;
 	   -moz-background-size: 382px 744px;
 	        background-size: 382px 744px;
@@ -21,7 +24,7 @@
 }
 
 .simulator .simulator-display-glare {
-	background: url(iphone-glare.png); /* Must be here, FF11 */
+	background: url(iphone-glare.png)  no-repeat; /* Must be here, FF11 */
 	-webkit-background-size: 360px 726px;
 	   -moz-background-size: 360px 726px;
 	        background-size: 360px 726px;

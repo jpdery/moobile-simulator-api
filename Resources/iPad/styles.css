@@ -2,7 +2,7 @@
 -----------------------------------------------------------------------------*/
 
 .simulator {
-	background: url(ipad.jpg); /* Must be here, FF11 */
+	background: url(ipad.jpg) no-repeat; /* Must be here, FF11 */
 	-webkit-background-size: 978px 1268px;
 	   -moz-background-size: 978px 1268px;
 	        background-size: 978px 1268px;
