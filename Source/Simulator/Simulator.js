@@ -465,9 +465,17 @@ Moobile.Simulator = new Class({
 		this.applicationPath = path;
 		this.applicationWindow = null;
 
-		this.iframe.set('src', path);
+		this.iframe.set('src', path + '?' + String.uniqueID());
 
 		return this;
+	},
+
+	/**
+	 * @author Jean-Philippe Dery (jeanphilippe.dery@gmail.com)
+	 * @since  0.1
+	 */
+	getApplication: function() {
+		return this.applicationPath;
 	},
 
 	/**
