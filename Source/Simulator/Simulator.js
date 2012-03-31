@@ -474,6 +474,14 @@ Moobile.Simulator = new Class({
 	 * @author Jean-Philippe Dery (jeanphilippe.dery@gmail.com)
 	 * @since  0.1
 	 */
+	getApplication: function() {
+		return this.applicationPath;
+	},
+
+	/**
+	 * @author Jean-Philippe Dery (jeanphilippe.dery@gmail.com)
+	 * @since  0.1
+	 */
 	_onApplicationReady: function() {
 		this.applicationWindow = this.iframe.contentWindow;
 		this.applicationWindow.orientation = this._deviceOrientation === 'portrait' ? 0 : 90;
