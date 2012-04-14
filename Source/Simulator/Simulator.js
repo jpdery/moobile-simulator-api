@@ -465,7 +465,7 @@ Moobile.Simulator = new Class({
 		this.applicationPath = path;
 		this.applicationWindow = null;
 
-		this.iframe.set('src', path);
+		this.iframe.set('src', path + '?' + String.uniqueID());
 
 		return this;
 	},
