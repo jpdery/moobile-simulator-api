@@ -2,26 +2,20 @@
 -----------------------------------------------------------------------------*/
 
 .simulator {
-	background: url(iphone.png) no-repeat; /* Must be here, FF11 */
+	background: url(iphone.png) no-repeat;
 	background-size: 382px 744px;
 	-webkit-border-radius: 58px;
 	   -moz-border-radius: 58px;
 	        border-radius: 58px;
-	-webkit-box-sizing: border-box;
-	   -moz-box-sizing: border-box;
-	        box-sizing: border-box;
-	font-family: "Helvetica Neue", "Helvetica", Sans-Serif;
-	font-weight: normal;
 	height: 744px;
 	padding-top: 132px;
 	padding-bottom: 132px;
 	padding-left: 31px;
 	padding-right: 31px;
-	position: relative;
 	width: 382px;
 }
 
-.simulator .simulator-display-glare {
+.simulator .simulator-glare {
 	-webkit-backface-visibility: hidden;
 	   -moz-backface-visibility: hidden;
 	        backface-visibility: hidden;
@@ -39,38 +33,7 @@
 
 .simulator .simulator-display {
 	height: 480px;
-	overflow: hidden;
-	position: relative;
 	width: 320px;
-}
-
-body.chrome .simulator .simulator-display {
-	overflow: visible;
-	position: static;
-}
-
-.simulator .simulator-content {
-	background: white;
-	-webkit-backface-visibility: hidden;
-	   -moz-backface-visibility: hidden;
-	        backface-visibility: hidden;
-	-webkit-transform-origin: center center;
-	   -moz-transform-origin: center center;
-	        transform-origin: center center;
-	-webkit-transform: translate3d(0, 0, 0);
-	   -moz-transform: translate3d(0, 0, 0);
-	        transform: translate3d(0, 0, 0);
-	position: relative;
-}
-
-.simulator.animate .simulator-content,
-.simulator.animate .simulator-content iframe {
-	-webkit-transition: -webkit-transform 350ms cubic-bezier(0.5, 0.1, 0.5, 1.0), margin 0ms, width 0ms, height 0ms;
-	   -moz-transition:    -moz-transform 350ms cubic-bezier(0.5, 0.1, 0.5, 1.0), margin 0ms, width 0ms, height 0ms;
-	        transition:         transform 350ms cubic-bezier(0.5, 0.1, 0.5, 1.0), margin 0ms, width 0ms, height 0ms;
-	-webkit-transition-delay: 350ms;
-   	   -moz-transition-delay: 350ms;
-	        transition-delay: 350ms;
 }
 
 .simulator.portrait .simulator-content {
@@ -85,10 +48,6 @@ body.chrome .simulator .simulator-display {
 	width: 480px;
 }
 
-.simulator .simulator-content iframe {
-	border: none;
-}
-
 .simulator.portrait .simulator-content iframe {
 	height: 460px;
 	width: 320px;
@@ -99,65 +58,40 @@ body.chrome .simulator .simulator-display {
 	width: 480px;
 }
 
-/* Status Bar
+/* Portrait With Safari Bar, With Button Bar */
+
+.simulator.portrait.with-button-bar .simulator-content iframe { height: 416px; }
+.simulator.portrait.with-safari-bar .simulator-content iframe {	height: 400px; }
+.simulator.portrait.with-button-bar.with-safari-bar .simulator-content iframe { height: 356px; }
+
+/* Landscape With Safari Bar, With Button Bar */
+
+.simulator.landscape.with-button-bar .simulator-content iframe { height: 268px; }
+.simulator.landscape.with-safari-bar .simulator-content iframe { height: 240px; }
+.simulator.landscape.with-button-bar.with-safari-bar .simulator-content iframe { height: 208px; }
+
+/* Safari Bar
 -----------------------------------------------------------------------------*/
 
-.simulator .simulator-status-bar {
-	background: url(status-bar.png) repeat-x;
-    background-size: 320px 20px;
-	color: #000000;
-	display: block;
-	font-size: 14px;
-	font-weight: 600;
-	height: 20px;
-	line-height: 19px;
-	top: 0px;
-	text-shadow: 0px 1px 1px #ffffff;
-	text-transform: uppercase;
+.simulator .simulator-safari-bar {
+	display: none;
 	width: 100%;
-	z-index: 10;
 }
 
-.simulator .simulator-status-bar.dark {
-	background: url(status-bar-dark.png) repeat-x;
-	color: #ffffff;
-	text-shadow: 0px 1px 0px #000000;
+.simulator.portrait .simulator-safari-bar {
+	background: url(safari-bar-portrait.png);
+    background-size: 320px 60px;
+    height: 60px;
 }
 
-.simulator .simulator-status-bar-network,
-.simulator .simulator-status-bar-battery,
-.simulator .simulator-status-bar-time {
-	-webkit-font-smoothing: antialiased;
-	height: 20px;
-	left: 0px;
-	position: absolute;
-	right: 0px;
+.simulator.landscape .simulator-safari-bar {
+	background: url(safari-bar-landscape.png);
+    background-size: 480px 60px;
+    height: 60px;
 }
 
-.simulator .simulator-status-bar-network {
-	background: url(status-bar-network.png) no-repeat center left;
-    background-size: 50px 20px;
-	font-size: 13px;
-	left: 4px;
-	padding-left: 21px;
-}
-
-.simulator .simulator-status-bar.dark .simulator-status-bar-network {
-	background: url(status-bar-network-dark.png) no-repeat center left;
-}
-
-.simulator .simulator-status-bar-battery {
-	background: url(status-bar-battery.png) no-repeat center right;
-    background-size: 38px 20px;
-	right: 3px;
-}
-
-.simulator .simulator-status-bar.dark .simulator-status-bar-battery {
-	background: url(status-bar-battery-dark.png) no-repeat center right;
-}
-
-.simulator .simulator-status-bar-time {
-	text-align: center;
+.simulator.with-safari-bar .simulator-safari-bar {
+	display: block;
 }
 
 /* Button Bar
@@ -165,20 +99,22 @@ body.chrome .simulator .simulator-display {
 
 .simulator .simulator-button-bar {
 	display: none;
-	height: 64px;
+	margin-top: -2px;
 	width: 100%;
 }
 
-.simulator.portrait .button-bar {
+.simulator.portrait .simulator-button-bar {
 	background: url(button-bar-portrait.png);
     background-size: 320px 44px;
+    height: 44px;
 }
 
-.simulator.landscape .button-bar {
+.simulator.landscape .simulator-button-bar {
 	background: url(button-bar-landscape.png);
-    background-size: 480px 44px;
+    background-size: 480px 32px;
+    height: 32px;
 }
 
-.simulator.with-button-bar .button-bar {
+.simulator.with-button-bar .simulator-button-bar {
 	display: block;
 }

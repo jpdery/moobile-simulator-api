@@ -15,8 +15,11 @@ authors: "Jean-Philippe Dery (jeanphilippe.dery@gmail.com)"
 sources:
 
   - "Source/Device/Device.js"
+  - "Source/Device/Device.iOS.js"
   - "Source/Device/Device.iPad.js"
+  - "Source/Device/Device.iPad.Retina.js"
   - "Source/Device/Device.iPhone.js"
+  - "Source/Device/Device.iPhone.Retina.js"
   - "Source/Event/Event.CSS3.js"
   - "Source/Element/Element.Style.Vendor.js"
   - "Source/Simulator/Simulator.js"

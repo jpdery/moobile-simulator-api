@@ -2,10 +2,12 @@
 -----------------------------------------------------------------------------*/
 
 .simulator {
-	background: url(ipad.jpg) no-repeat; /* Must be here, FF11 */
-	-webkit-background-size: 978px 1268px;
-	   -moz-background-size: 978px 1268px;
-	        background-size: 978px 1268px;
+	-webkit-border-radius: 58px;
+	   -moz-border-radius: 58px;
+	        border-radius: 58px;
+	background: url(ipad.jpg) no-repeat;
+	background-size: 978px 1268px;
+
 	height: 1268px;
 	padding-top: 123px;
 	padding-bottom: 121px;
@@ -14,12 +16,16 @@
 	width: 978px;
 }
 
-.simulator .simulator-display-glare {
-	background: url(ipad-glare.png) no-repeat top right; /* Must be here, FF11 */
-	-webkit-background-size: 527px 1191px;
-	   -moz-background-size: 527px 1191px;
-	        background-size: 527px 1191px;
+.simulator .simulator-glare {
+	-webkit-backface-visibility: hidden;
+	   -moz-backface-visibility: hidden;
+	        backface-visibility: hidden;
+	background: url(ipad-glare.png) no-repeat top right;
+    background-size: 527px 1191px;
 	height: 1268px;
+	opacity: 0.5;
+	position: absolute;
+	pointer-events: none;
 	top: 10px;
 	right: 10px;
 	width: 978px;
@@ -51,4 +57,36 @@
 .simulator.landscape .simulator-content iframe {
 	height: 748px;
 	width: 1024px;
+}
+
+/* Portrait With Safari Bar */
+
+.simulator.portrait.with-safari-bar .simulator-content iframe {	height: 928px; }
+
+/* Landscape With Safari Bar */
+
+.simulator.landscape.with-safari-bar .simulator-content iframe {	height: 672px; }
+
+/* Safari Bar
+-----------------------------------------------------------------------------*/
+
+.simulator .simulator-safari-bar {
+	display: none;
+	width: 100%;
+}
+
+.simulator.portrait .simulator-safari-bar {
+	background: url(safari-bar-portrait.png);
+    background-size: 768px 76px;
+    height: 76px;
+}
+
+.simulator.landscape .simulator-safari-bar {
+	background: url(safari-bar-landscape.png);
+    background-size: 1024px 76px;
+    height: 76px;
+}
+
+.simulator.with-safari-bar .simulator-safari-bar {
+	display: block;
 }

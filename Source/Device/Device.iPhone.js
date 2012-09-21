@@ -21,29 +21,17 @@ provides:
 
 Moobile.Simulator.Device['iPhone'] = new Class({
 
-	Extends: Moobile.Simulator.Device,
+	Extends: Moobile.Simulator.Device['iOS'],
 
 	/**
 	 * @author Jean-Philippe Dery (jeanphilippe.dery@gmail.com)
-	 * @since  0.1
+	 * @since  0.2
 	 */
-	element: null,
+	safariBar: null,
 
 	/**
 	 * @author Jean-Philippe Dery (jeanphilippe.dery@gmail.com)
-	 * @since  0.1
-	 */
-	glare: null,
-
-	/**
-	 * @author Jean-Philippe Dery (jeanphilippe.dery@gmail.com)
-	 * @since  0.1
-	 */
-	statusBar: null,
-
-	/**
-	 * @author Jean-Philippe Dery (jeanphilippe.dery@gmail.com)
-	 * @since  0.1
+	 * @since  0.2
 	 */
 	buttonBar: null,
 
@@ -51,22 +39,31 @@ Moobile.Simulator.Device['iPhone'] = new Class({
 	 * @author Jean-Philippe Dery (jeanphilippe.dery@gmail.com)
 	 * @since  0.1
 	 */
-	decorate: function(element, display, content, iframe) {
+	setup: function() {
 
-		this.loadCSS('iPhone/styles.css');
+		this.parent();
 
-		this.element = element;
+		this.require('iPhone/styles.css');
 
-		this.glare = new Element('div.simulator-display-glare').inject(element, 'top');
-		this.buttonBar = new Element('div.simulator-button-bar').inject(content, 'bottom');
-		this.statusBar = new Element('div.simulator-status-bar').inject(content, 'top');
-		this.statusBar.adopt([
-			new Element('div.simulator-status-bar-time'),
-			new Element('div.simulator-status-bar-network'),
-			new Element('div.simulator-status-bar-battery')
-		]);
+		var payload = this.simulator.getPayloadElement();
+		var wrapper = this.simulator.getWrapperElement();
 
-		this.updateTime();
+		this.safariBar = new Element('div.simulator-safari-bar');
+		this.buttonBar = new Element('div.simulator-button-bar');
+		this.safariBar.inject(payload, 'before');
+		this.buttonBar.inject(payload, 'after');
+
+		this.defineOption('safari-bar', 'Navigation Bar', {
+			active: false,
+			enable:  function() { wrapper.addClass('with-safari-bar') },
+			disable: function() { wrapper.removeClass('with-safari-bar') }
+		});
+
+		this.defineOption('tool-bar', 'Tool Bar', {
+			active: false,
+			enable:  function() { wrapper.addClass('with-button-bar') },
+			disable: function() { wrapper.removeClass('with-button-bar') }
+		});
  	},
 
 	/**
@@ -74,9 +71,11 @@ Moobile.Simulator.Device['iPhone'] = new Class({
 	 * @since  0.1
 	 */
 	teardown: function() {
-		this.glare.destroy();
-		this.statusBar.destroy();
+		this.safariBar.destroy();
+		this.safariBar = null;
 		this.buttonBar.destroy();
+		this.buttonBar = null;
+		this.parent();
 	},
 
 	/**
@@ -84,49 +83,14 @@ Moobile.Simulator.Device['iPhone'] = new Class({
 	 * @since  0.1
 	 */
 	getSize: function() {
-		return {
-			x: 382,
-			y: 744
-		};
+		return {x: 0, y: 0};
 	},
 
 	/**
 	 * @author Jean-Philippe Dery (jeanphilippe.dery@gmail.com)
-	 * @since  0.1
+	 * @since  0.2
 	 */
-	willChangeOrientationAnimated: function(orientation) {
-		this.element.addClass('animate');
-	},
-
-	/**
-	 * @author Jean-Philippe Dery (jeanphilippe.dery@gmail.com)
-	 * @since  0.1
-	 */
-	didChangeOrientationAnimated: function(orientation) {
-		this.element.removeClass('animate');
-	},
-
-	/**
-	 * @author Jean-Philippe Dery (jeanphilippe.dery@gmail.com)
-	 * @since  0.1
-	 */
-	supportsOrientation: function(orientation) {
-		return ['portrait', 'landscape'].contains(orientation);
-	},
-
-	/**
-	 * @author Jean-Philippe Dery (jeanphilippe.dery@gmail.com)
-	 * @since  0.1
-	 */
-	supportsPixelRatio: function(ratio) {
-		return [1, 2].contains(ratio);
-	},
-
-	/**
-	 * @author Jean-Philippe Dery (jeanphilippe.dery@gmail.com)
-	 * @since  0.1
-	 */
-	updateTime: function() {
+	clock: function() {
 
 		var time = new Date()
 		var hh = time.getHours()
@@ -143,9 +107,10 @@ Moobile.Simulator.Device['iPhone'] = new Class({
 			mm = "0" + mm;
 		}
 
-		this.element.getElement('.simulator-status-bar-time').set('html', hh + ":" + mm + " " + am);
-
-		this.updateTime.delay(5000, this);
+		if (this.statusBar) {
+			this.statusBar.getElement('.simulator-status-bar-time').set('html', hh + ":" + mm + " " + am);
+			this.clock.delay(5000, this);
+		}
 	}
 
 });

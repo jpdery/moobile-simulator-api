@@ -1,0 +1,142 @@
+/* Simulator
+-----------------------------------------------------------------------------*/
+
+.simulator {
+	-webkit-box-sizing: border-box;
+	   -moz-box-sizing: border-box;
+	        box-sizing: border-box;
+	font-family: "Helvetica Neue", "Helvetica", Sans-Serif;
+	font-weight: normal;
+	height: 744px;
+	position: relative;
+}
+
+.simulator .simulator-display {
+	overflow: hidden;
+	position: relative;
+}
+
+body.chrome .simulator .simulator-display {
+	overflow: visible;
+	position: static;
+}
+
+.simulator .simulator-content {
+	background: white;
+	-webkit-backface-visibility: hidden;
+	   -moz-backface-visibility: hidden;
+	        backface-visibility: hidden;
+	-webkit-transform-origin: center center;
+	   -moz-transform-origin: center center;
+	        transform-origin: center center;
+	-webkit-transform: translate3d(0, 0, 0);
+	   -moz-transform: translate3d(0, 0, 0);
+	        transform: translate3d(0, 0, 0);
+	position: relative;
+}
+
+.simulator iframe {
+	border: none;
+	margin: 0px;
+	overflow: hidden;
+	padding: 0px;
+}
+
+/* Device
+-----------------------------------------------------------------------------*/
+
+@-webkit-keyframes show-device {
+	from {
+		-webkit-transform: scale(1);
+		opacity: 1;
+	}
+	to {
+		-webkit-transform: scale(0.75);
+		opacity: 0;
+	}
+}
+
+.simulator.show-device {
+	-webkit-animation: show-device 350ms cubic-bezier(0.5, 0.1, 0.5, 1.0);
+	-webkit-animation-fill-mode: both;
+}
+
+@-webkit-keyframes hide-device {
+	from {
+		-webkit-transform: scale(0.75);
+		opacity: 0;
+	}
+
+	to {
+		-webkit-transform: scale(1);
+		opacity: 1;
+	}
+}
+
+.simulator.hide-device {
+	-webkit-animation: hide-device 350ms cubic-bezier(0.5, 0.1, 0.5, 1.0);
+	-webkit-animation-fill-mode: both;
+}
+
+/* Orientation
+-----------------------------------------------------------------------------*/
+
+/* Portrait */
+
+.simulator.portrait {
+	-webkit-transform: rotate(0deg);
+}
+
+.simulator.portrait .simulator-content {
+	-webkit-transform: rotate(0deg);
+}
+
+/* Landscape */
+
+.simulator.landscape {
+	-webkit-transform: rotate(90deg);
+}
+
+.simulator.landscape .simulator-content {
+	-webkit-transform: rotate(-90deg);
+}
+
+/* Rotate Landscape */
+
+@-webkit-keyframes rotate-landscape {
+	to { -webkit-transform: rotate(90deg); }
+}
+@-webkit-keyframes rotate-landscape-content {
+	to { -webkit-transform: rotate(-90deg); }
+}
+
+.simulator.rotate-landscape {
+	-webkit-animation: rotate-landscape 350ms cubic-bezier(0.5, 0.1, 0.5, 1.0);
+	-webkit-animation-fill-mode: both;
+}
+
+.simulator.rotate-landscape .simulator-content {
+	-webkit-animation: rotate-landscape-content 350ms cubic-bezier(0.5, 0.1, 0.5, 1.0);
+	-webkit-animation-fill-mode: both;
+	-webkit-animation-delay: 350ms;
+}
+
+/* Rotate Portrait */
+
+@-webkit-keyframes rotate-portrait {
+	to { -webkit-transform: rotate(0deg); }
+}
+@-webkit-keyframes rotate-portrait-content {
+	to { -webkit-transform: rotate(0deg); }
+}
+
+.simulator.rotate-portrait {
+	-webkit-animation: rotate-portrait 350ms cubic-bezier(0.5, 0.1, 0.5, 1.0);
+	-webkit-animation-fill-mode: both;
+}
+
+.simulator.rotate-portrait .simulator-content {
+	-webkit-animation: rotate-portrait-content 350ms cubic-bezier(0.5, 0.1, 0.5, 1.0);
+	-webkit-animation-fill-mode: both;
+	-webkit-animation-delay: 350ms;
+}
