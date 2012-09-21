@@ -7,7 +7,6 @@
 	        box-sizing: border-box;
 	font-family: "Helvetica Neue", "Helvetica", Sans-Serif;
 	font-weight: normal;
-	height: 744px;
 	position: relative;
 }
 
@@ -45,36 +44,42 @@ body.chrome .simulator .simulator-display {
 /* Device
 -----------------------------------------------------------------------------*/
 
-@-webkit-keyframes show-device {
-	from {
-		-webkit-transform: scale(1);
-		opacity: 1;
-	}
-	to {
-		-webkit-transform: scale(0.75);
-		opacity: 0;
-	}
+@-webkit-keyframes show-device-portrait {
+	from { -webkit-transform: scale(1)    rotate(0deg); opacity: 1; }
+	to   { -webkit-transform: scale(0.75) rotate(0deg); opacity: 0; }
 }
 
-.simulator.show-device {
-	-webkit-animation: show-device 350ms cubic-bezier(0.5, 0.1, 0.5, 1.0);
+@-webkit-keyframes show-device-landscape {
+	from { -webkit-transform: scale(1)    rotate(90deg); opacity: 1; }
+	to   { -webkit-transform: scale(0.75) rotate(90deg); opacity: 0; }
+}
+
+.simulator.portrait.show-device {
+	-webkit-animation: show-device-portrait 350ms cubic-bezier(0.5, 0.1, 0.5, 1.0);
 	-webkit-animation-fill-mode: both;
 }
 
-@-webkit-keyframes hide-device {
-	from {
-		-webkit-transform: scale(0.75);
-		opacity: 0;
-	}
-
-	to {
-		-webkit-transform: scale(1);
-		opacity: 1;
-	}
+.simulator.landscape.show-device {
+	-webkit-animation: show-device-landscape 350ms cubic-bezier(0.5, 0.1, 0.5, 1.0);
+	-webkit-animation-fill-mode: both;
 }
 
-.simulator.hide-device {
-	-webkit-animation: hide-device 350ms cubic-bezier(0.5, 0.1, 0.5, 1.0);
+@-webkit-keyframes hide-device-portrait {
+	from { -webkit-transform: scale(0.75) rotate(0deg); opacity: 0; }
+	to   { -webkit-transform: scale(1)    rotate(0deg); opacity: 1; }
+}
+@-webkit-keyframes hide-device-landscape {
+	from { -webkit-transform: scale(0.75) rotate(90deg); opacity: 0; }
+	to   { -webkit-transform: scale(1)    rotate(90deg); opacity: 1; }
+}
+
+.simulator.portrait.hide-device {
+	-webkit-animation: hide-device-portrait 350ms cubic-bezier(0.5, 0.1, 0.5, 1.0);
+	-webkit-animation-fill-mode: both;
+}
+
+.simulator.landscape.hide-device {
+	-webkit-animation: hide-device-landscape 350ms cubic-bezier(0.5, 0.1, 0.5, 1.0);
 	-webkit-animation-fill-mode: both;
 }
 

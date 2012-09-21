@@ -1,0 +1,29 @@
+/* Device
+-----------------------------------------------------------------------------*/
+
+.simulator {
+	background: url(iphone.png) no-repeat; /* Must be here, FF11 */
+	background-size: 764px 1488px;
+	padding-top: 264px;
+	padding-bottom: 264px;
+	padding-left: 62px;
+	padding-right: 62px;
+	height: 1488px;
+	width: 764px;
+}
+
+.simulator .simulator-glare {
+	background: url(iphone-glare.png)  no-repeat; /* Must be here, FF11 */
+	background-size: 720px 1452px;
+	height: 1452px;
+	width: 720px;
+}
+
+.simulator .simulator-display {
+	height: 960px;
+	width: 640px;
+}
+
+.simulator .simulator-content {
+	zoom: 200%;
+}

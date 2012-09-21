@@ -19,7 +19,7 @@ provides:
 ...
 */
 
-Moobile.Simulator.Device['iPhoneRetina'] = new Class({
+Moobile.Simulator.Device['iPhone-Retina'] = new Class({
 
 	Extends: Moobile.Simulator.Device['iPhone'],
 
@@ -27,15 +27,9 @@ Moobile.Simulator.Device['iPhoneRetina'] = new Class({
 	 * @author Jean-Philippe Dery (jeanphilippe.dery@gmail.com)
 	 * @since  0.2
 	 */
-	iframe: null,
-
-	/**
-	 * @author Jean-Philippe Dery (jeanphilippe.dery@gmail.com)
-	 * @since  0.2
-	 */
 	setup: function() {
 		this.parent();
-		this.require('iPhoneRetina/styles.css');
+		this.require('iPhone-Retina/styles.css');
  	},
 
 	/**

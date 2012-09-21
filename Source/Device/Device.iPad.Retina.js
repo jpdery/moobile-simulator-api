@@ -19,7 +19,7 @@ provides:
 ...
 */
 
-Moobile.Simulator.Device['iPadRetina'] = new Class({
+Moobile.Simulator.Device['iPad-Retina'] = new Class({
 
 	Extends: Moobile.Simulator.Device['iPad'],
 
@@ -27,16 +27,9 @@ Moobile.Simulator.Device['iPadRetina'] = new Class({
 	 * @author Jean-Philippe Dery (jeanphilippe.dery@gmail.com)
 	 * @since  0.2
 	 */
-	iframe: null,
-
-	/**
-	 * @author Jean-Philippe Dery (jeanphilippe.dery@gmail.com)
-	 * @since  0.2
-	 */
-	decorate: function(element, display, content, iframe) {
-		this.parent(element, display, content, iframe);
-		this.require('iPadRetina/styles.css');
-		this.setZoom('200%');
+	setup: function() {
+		this.parent();
+		this.require('iPad-Retina/styles.css');
  	},
 
 	/**
@@ -44,7 +37,12 @@ Moobile.Simulator.Device['iPadRetina'] = new Class({
 	 * @since  0.2
 	 */
  	teardown: function() {
- 		this.setZoom(null);
+
+ 		var applicationWindow = this.simulator.getApplicationWindow();
+ 		if (applicationWindow) {
+ 			applicationWindow.document.body.style.zoom = null;
+ 		}
+
  		this.parent();
  	},
 
@@ -63,9 +61,14 @@ Moobile.Simulator.Device['iPadRetina'] = new Class({
 	 * @author Jean-Philippe Dery (jeanphilippe.dery@gmail.com)
 	 * @since  0.2
 	 */
-	didLoadApp: function() {
+	applicationDidStart: function() {
+
 		this.parent();
-		this.setZoom('200%');
+
+ 		var applicationWindow = this.simulator.getApplicationWindow();
+ 		if (applicationWindow) {
+ 			applicationWindow.document.body.style.zoom = '200%';
+ 		}
 	}
 
 });

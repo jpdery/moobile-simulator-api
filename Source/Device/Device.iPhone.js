@@ -83,9 +83,11 @@ Moobile.Simulator.Device['iPhone'] = new Class({
 	 * @since  0.1
 	 */
 	getSize: function() {
-		return {x: 0, y: 0};
+		return {
+			x: 382,
+			y: 744
+		};
 	},
-
 	/**
 	 * @author Jean-Philippe Dery (jeanphilippe.dery@gmail.com)
 	 * @since  0.2
