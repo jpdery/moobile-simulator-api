@@ -296,6 +296,8 @@ Moobile.Simulator = new Class({
 			this._device.setOption(id, active);
 		}
 
+		this.fireEvent('deviceoptionchange', [id, active]);
+
 		return this;
 	},
 
