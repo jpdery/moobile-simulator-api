@@ -79,6 +79,12 @@ Moobile.Simulator.Device['iOS'] = new Class({
 		this.statusBarNetwork.inject(this.statusBar);
 		this.statusBarBattery.inject(this.statusBar);
 
+		this.defineOption('glare', 'Show Screen Glare', {
+			active: true,
+			enable:  function() { wrapper.removeClass('without-glare') },
+			disable: function() { wrapper.addClass('without-glare') }
+		});
+
 		this.clock();
 	},
 

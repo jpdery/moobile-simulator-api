@@ -51,7 +51,7 @@ Moobile.Simulator.Device['iPad'] = new Class({
 		this.safariBar = new Element('div.simulator-safari-bar');
 		this.safariBar.inject(payload, 'after');
 
-		this.defineOption('safari-bar', 'Navigation Bar', {
+		this.defineOption('safari-bar', 'Show Navigation Bar', {
 			active: false,
 			enable:  function() { wrapper.addClass('with-safari-bar'); },
 			disable: function() { wrapper.removeClass('with-safari-bar'); }

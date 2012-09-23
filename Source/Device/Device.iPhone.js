@@ -53,13 +53,13 @@ Moobile.Simulator.Device['iPhone'] = new Class({
 		this.safariBar.inject(payload, 'before');
 		this.buttonBar.inject(payload, 'after');
 
-		this.defineOption('safari-bar', 'Navigation Bar', {
+		this.defineOption('safari-bar', 'Show Safari Navigation Bar', {
 			active: false,
 			enable:  function() { wrapper.addClass('with-safari-bar') },
 			disable: function() { wrapper.removeClass('with-safari-bar') }
 		});
 
-		this.defineOption('tool-bar', 'Tool Bar', {
+		this.defineOption('tool-bar', 'Show Safari Toolbar', {
 			active: false,
 			enable:  function() { wrapper.addClass('with-button-bar') },
 			disable: function() { wrapper.removeClass('with-button-bar') }
