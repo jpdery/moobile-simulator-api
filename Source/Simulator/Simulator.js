@@ -65,6 +65,13 @@ Moobile.Simulator = new Class({
 	 * @author Jean-Philippe Dery (jeanphilippe.dery@gmail.com)
 	 * @since  0.2
 	 */
+	_deviceName: null,
+
+	/**
+	 * @hidden
+	 * @author Jean-Philippe Dery (jeanphilippe.dery@gmail.com)
+	 * @since  0.2
+	 */
 	_deviceOrientation: null,
 
 	/**
@@ -103,9 +110,6 @@ Moobile.Simulator = new Class({
 	 * @since  0.2
 	 */
 	options: {
-		device: 'iPhone',
-		deviceOrientation: 'portrait',
-		deviceOptions: {},
 		container: null
 	},
 
@@ -128,10 +132,6 @@ Moobile.Simulator = new Class({
 		this.payloadElement.set('scrolling', 'no');
 		this.payloadElement.addEvent('load', this.bound('_onAppLoad'));
 
-		this.setDevice(this.options.device);
-		this.setDeviceOptions(this.options.deviceOptions);
-		this.setDeviceOrientation(this.options.deviceOrientation);
-
 		window.addEvent('appready', this.bound('_onAppReady'));
 
 		Asset.css(Moobile.Simulator.getResource('simulator.css'));
@@ -145,35 +145,16 @@ Moobile.Simulator = new Class({
 	 */
 	destroy: function() {
 
-		this.payloadElement = null;
 		this.payloadElement.removeEvent('load', this.bound('_onAppLoad'));
-
-		this.displayElement = null;
-		this.contentElement = null;
+		this.payloadElement = null;
 
 		this.wrapperElement.destroy();
 		this.wrapperElement = null;
+		this.displayElement = null;
+		this.contentElement = null;
 
 		this._resources.invoke('destroy');
 		this._resources = null;
-	},
-
-	/**
-	 * @author Jean-Philippe Dery (jeanphilippe.dery@gmail.com)
-	 * @since  0.1
-	 */
-	execute: function(path) {
-
-		if (this._applicationPath === path)
-			return this;
-
-		this._applicationPath = path;
-		this._applicationLoaded = false;
-		this._applicationWindow = null;
-
-		this.payloadElement.set('src', path + '?' + String.uniqueID());
-
-		return this;
 	},
 
 	/**
@@ -196,7 +177,7 @@ Moobile.Simulator = new Class({
 			if (name) {
 
 				var device = Moobile.Simulator.Device[name];
-				if (device == undefined) {
+				if (device === undefined) {
 					throw new Error('Device ' + name + ' does not exists.');
 				}
 
@@ -213,7 +194,7 @@ Moobile.Simulator = new Class({
 					this._device.applicationDidStart();
 				}
 
-				this.fireEvent('devicechange', this._device);
+				this.fireEvent('devicechange', this._deviceName);
 			}
 
 			return this;
@@ -266,9 +247,35 @@ Moobile.Simulator = new Class({
 	 */
 	setDeviceOptions: function(options) {
 
-		if (this._device) {
-			Object.each(options, this.setDeviceOption, this);
-		}
+		if (this._device === null)
+			return this;
+
+		var setOption = function(value, option) {
+			this.setDeviceOption(option, value);
+		}.bind(this);
+
+		Object.each(options, setOption);
+
+		return this;
+	},
+
+
+	/**
+	 * @author Jean-Philippe Dery (jeanphilippe.dery@gmail.com)
+	 * @since  0.2
+	 */
+	setDeviceOption: function(option, value) {
+
+		if (this._device == null)
+			return this;
+
+		var current = this._device.getOption(option);
+		if (current === value)
+			return this;
+
+		this._device.setOption(option, value);
+
+		this.fireEvent('deviceoptionchange', [option, value]);
 
 		return this;
 	},
@@ -278,40 +285,16 @@ Moobile.Simulator = new Class({
 	 * @since  0.2
 	 */
 	getDeviceOptions: function() {
-
-		if (this._device) {
-			return this._device.getOptions();
-		}
-
-		return null;
+		return this._device ? this._device.getOptions() : null;
 	},
+
 
 	/**
 	 * @author Jean-Philippe Dery (jeanphilippe.dery@gmail.com)
 	 * @since  0.2
 	 */
-	setDeviceOption: function(id, active) {
-
-		if (this._device) {
-			this._device.setOption(id, active);
-		}
-
-		this.fireEvent('deviceoptionchange', [id, active]);
-
-		return this;
-	},
-
-	/**
-	 * @author Jean-Philippe Dery (jeanphilippe.dery@gmail.com)
-	 * @since  0.2
-	 */
-	getDeviceOption: function(id) {
-
-		if (this._device) {
-			return this._device.getOption(id);
-		}
-
-		return null;
+	getDeviceOption: function(option) {
+		return this._device ? this._device.getOption(option) : null;
 	},
 
 	/**
@@ -378,6 +361,24 @@ Moobile.Simulator = new Class({
 	 */
 	getDeviceOrientation: function() {
 		return this._deviceOrientation;
+	},
+
+	/**
+	 * @author Jean-Philippe Dery (jeanphilippe.dery@gmail.com)
+	 * @since  0.1
+	 */
+	setApplication: function(path) {
+
+		if (this._applicationPath === path)
+			return this;
+
+		this._applicationPath = path;
+		this._applicationLoaded = false;
+		this._applicationWindow = null;
+
+		this.payloadElement.set('src', path + '?' + String.uniqueID());
+
+		return this;
 	},
 
 	/**
