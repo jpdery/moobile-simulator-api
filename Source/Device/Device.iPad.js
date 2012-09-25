@@ -46,7 +46,7 @@ Moobile.Simulator.Device['iPad'] = new Class({
 		this.require('iPad/styles.css');
 
 		var payload = this.simulator.getPayloadElement();
-		var content = this.simulator.getContentElement();
+		var wrapper = this.simulator.getWrapperElement();
 
 		this.safariBar = new Element('div.simulator-safari-bar');
 		this.safariBar.inject(payload, 'after');
