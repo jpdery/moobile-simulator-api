@@ -67,7 +67,13 @@ Moobile.Simulator.Device = new Class({
 	 * @since  0.2
 	 */
 	teardown: function() {
+
+		Object.each(this.options, function(option) {
+			option.disable.call(this);
+		});
+
 		this.options = null;
+
 		this.simulator = null;
 		this.resources.invoke('destroy');
 		this.resource = null;
