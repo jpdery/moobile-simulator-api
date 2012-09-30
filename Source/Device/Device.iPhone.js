@@ -45,8 +45,8 @@ Moobile.Simulator.Device['iPhone'] = new Class({
 
 		this.require('iPhone/styles.css');
 
-		var payload = this.simulator.getPayloadElement();
-		var wrapper = this.simulator.getWrapperElement();
+		var payload = this.simulator.getIframeElement();
+		var wrapper = this.simulator.getDeviceElement();
 
 		this.safariBar = new Element('div.simulator-safari-bar');
 		this.buttonBar = new Element('div.simulator-button-bar');
@@ -87,32 +87,6 @@ Moobile.Simulator.Device['iPhone'] = new Class({
 			x: 382,
 			y: 744
 		};
-	},
-	/**
-	 * @author Jean-Philippe Dery (jeanphilippe.dery@gmail.com)
-	 * @since  0.2
-	 */
-	clock: function() {
-
-		var time = new Date()
-		var hh = time.getHours()
-		var mm = time.getMinutes()
-		var am = "AM";
-		if (hh >= 12) {
-			hh = hh - 12;
-			am = "PM";
-		}
-		if (hh == 0) {
-			hh = 12;
-		}
-		if (mm < 10) {
-			mm = "0" + mm;
-		}
-
-		if (this.statusBar) {
-			this.statusBar.getElement('.simulator-status-bar-time').set('html', hh + ":" + mm + " " + am);
-			this.clock.delay(5000, this);
-		}
 	}
 
 });

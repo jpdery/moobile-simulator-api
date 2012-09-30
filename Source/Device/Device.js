@@ -70,13 +70,13 @@ Moobile.Simulator.Device = new Class({
 
 		Object.each(this.options, function(option) {
 			option.disable.call(this);
-		});
+		}, this);
 
 		this.options = null;
-
 		this.simulator = null;
 		this.resources.invoke('destroy');
 		this.resource = null;
+
 		return this;
 	},
 
@@ -192,7 +192,3 @@ Moobile.Simulator.Device = new Class({
 	}
 
 });
-
-Moobile.Simulator.Device.create = function(name, simulator) {
-
-};

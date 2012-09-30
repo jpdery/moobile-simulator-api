@@ -33,84 +33,71 @@ Moobile.Simulator = new Class({
 	],
 
 	/**
-	 * @hidden
 	 * @author Jean-Philippe Dery (jeanphilippe.dery@gmail.com)
 	 * @since  0.2
 	 */
-	_applicationPath: null,
-
-	/**
-	 * @hidden
-	 * @author Jean-Philippe Dery (jeanphilippe.dery@gmail.com)
-	 * @since  0.2
-	 */
-	_applicationLoaded: false,
-
-	/**
-	 * @hidden
-	 * @author Jean-Philippe Dery (jeanphilippe.dery@gmail.com)
-	 * @since  0.2
-	 */
-	_applicationWindow: null,
-
-	/**
-	 * @hidden
-	 * @author Jean-Philippe Dery (jeanphilippe.dery@gmail.com)
-	 * @since  0.2
-	 */
-	_device: null,
-
-	/**
-	 * @hidden
-	 * @author Jean-Philippe Dery (jeanphilippe.dery@gmail.com)
-	 * @since  0.2
-	 */
-	_deviceName: null,
-
-	/**
-	 * @hidden
-	 * @author Jean-Philippe Dery (jeanphilippe.dery@gmail.com)
-	 * @since  0.2
-	 */
-	_deviceOrientation: null,
-
-	/**
-	 * @hidden
-	 * @author Jean-Philippe Dery (jeanphilippe.dery@gmail.com)
-	 * @since  0.2
-	 */
-	_deviceAnimating: false,
+	applicationPath: null,
 
 	/**
 	 * @author Jean-Philippe Dery (jeanphilippe.dery@gmail.com)
 	 * @since  0.2
 	 */
-	wrapperElement: null,
+	applicationWindow: null,
 
 	/**
 	 * @author Jean-Philippe Dery (jeanphilippe.dery@gmail.com)
 	 * @since  0.2
 	 */
-	displayElement: null,
+	device: null,
 
 	/**
 	 * @author Jean-Philippe Dery (jeanphilippe.dery@gmail.com)
 	 * @since  0.2
 	 */
-	contentElement: null,
+	deviceName: null,
+
+	/**
+	 * @author Jean-Philippe Dery (jeanphilippe.dery@gmail.com)
+	 * @since  0.2
+	 */
+	deviceOrientation: null,
+
+	/**
+	 * @author Jean-Philippe Dery (jeanphilippe.dery@gmail.com)
+	 * @since  0.2
+	 */
+	deviceAnimating: false,
+
+	/**
+	 * @author Jean-Philippe Dery (jeanphilippe.dery@gmail.com)
+	 * @since  0.2
+	 */
+	deviceElement: null,
+
+	/**
+	 * @author Jean-Philippe Dery (jeanphilippe.dery@gmail.com)
+	 * @since  0.2
+	 */
+	facadeElement: null,
+
+	/**
+	 * @author Jean-Philippe Dery (jeanphilippe.dery@gmail.com)
+	 * @since  0.2
+	 */
+	screenElement: null,
 
 	/**
 	 * @author Jean-Philippe Dery (jeanphilippe.dery@gmail.com)
 	 * @since  0.1
 	 */
-	payloadElement: null,
+	iframeElement: null,
 
 	/**
 	 * @author Jean-Philippe Dery (jeanphilippe.dery@gmail.com)
 	 * @since  0.2
 	 */
 	options: {
-		container: null
+		container: document.body
 	},
 
 	/**
@@ -119,22 +106,27 @@ Moobile.Simulator = new Class({
 	 */
 	initialize: function(options) {
 
-		this.setOptions(options);
-
 		document.body.addClass(Browser.name);
+		document.body.addClass(Browser.name + '-' + Browser.version);
 
-		var parent = document.id(this.options.container) || document.body;
+		this.setOptions(options);
+		this.build();
 
-		this.wrapperElement = new Element('div.simulator').inject(parent);
-		this.displayElement = new Element('div.simulator-display').inject(this.wrapperElement);
-		this.contentElement = new Element('div.simulator-content').inject(this.displayElement);
-		this.payloadElement = new Element('iframe').inject(this.contentElement);
-		this.payloadElement.set('scrolling', 'no');
-		this.payloadElement.addEvent('load', this.bound('_onAppLoad'));
+		return this;
+	},
 
-		window.addEvent('appready', this.bound('_onAppReady'));
+	/**
+	 * @author Jean-Philippe Dery (jeanphilippe.dery@gmail.com)
+	 * @since  0.2
+	 */
+	build: function() {
 
 		Asset.css(Moobile.Simulator.getResource('simulator.css'));
+
+		this.deviceElement = new Element('div.simulator').inject(this.options.container);
+		this.facadeElement = new Element('div.simulator-facade').inject(this.deviceElement);
+		this.screenElement = new Element('div.simulator-screen').inject(this.facadeElement);
+		this.iframeElement = new Element('iframe[scrolling=no]').inject(this.screenElement);
 
 		return this;
 	},
@@ -144,85 +136,148 @@ Moobile.Simulator = new Class({
 	 * @since  0.2
 	 */
 	destroy: function() {
-
-		this.payloadElement.removeEvent('load', this.bound('_onAppLoad'));
-		this.payloadElement = null;
-
-		this.wrapperElement.destroy();
-		this.wrapperElement = null;
-		this.displayElement = null;
-		this.contentElement = null;
-
-		this._resources.invoke('destroy');
-		this._resources = null;
+		this.deviceElement.destroy();
+		this.deviceElement = null;
+		this.facadeElement = null;
+		this.screenElement = null;
+		this.iframeElement = null;
 	},
 
 	/**
 	 * @author Jean-Philippe Dery (jeanphilippe.dery@gmail.com)
 	 * @since  0.1
 	 */
-	setDevice: function(name, animated) {
+	setDeviceAnimated: function(name) {
 
-		if (this._deviceAnimating || this._deviceName === name)
+		if (this.deviceAnimating || this.deviceName === name)
 			return this;
 
-		var apply = function() {
-
-			if (this._device) {
-				this._device.teardown();
-				this._device = null;
-				this._deviceName = null;
-			}
-
-			if (name) {
-
-				var device = Moobile.Simulator.Device[name];
-				if (device === undefined) {
-					throw new Error('Device ' + name + ' does not exists.');
-				}
-
-				this._device = new device(this);
-				this._device.setup();
-				this._deviceName = name;
-
-				var size = this._device.getSize();
-				this.wrapperElement.setStyle('height', size.y);
-				this.wrapperElement.setStyle('width', size.x);
-
-				if (this._applicationLoaded) {
-					this._device.applicationDidLoad();
-					this._device.applicationDidStart();
-				}
-
-				this.fireEvent('devicechange', this._deviceName);
-			}
-
-			return this;
-
+		var onPlay = function(animation) {
+			if (animation.getName() === '2') this.setDevice(name);
 		}.bind(this);
 
-		if (animated) {
+		var anim = new Animation.List();
+		anim.addEvent('play', onPlay);
+		anim.addEvent('start', this.bound('_onDeviceAnimationStart'));
+		anim.addEvent('end', this.bound('_onDeviceAnimationEnd'));
+		anim.setAnimation('1', new Animation(this.deviceElement).setAnimationClass('hide-device'));
+		anim.setAnimation('2', new Animation(this.deviceElement).setAnimationClass('show-device'));
+		anim.start();
 
-			var onBackgroundAnimationEnd = function() {
-				apply();
-				this.wrapperElement.removeEvent('animationend', onBackgroundAnimationEnd);
-				this.wrapperElement.removeClass('show-device');
-				this.wrapperElement.addEvent('animationend', onForegroundAnimationEnd);
-				this.wrapperElement.addClass('hide-device');
-			}.bind(this);
+		return this;
+	},
 
-			var onForegroundAnimationEnd = function() {
-				this.wrapperElement.removeEvent('animationend', onForegroundAnimationEnd);
-				this.wrapperElement.removeClass('hide-device');
-			}.bind(this);
+	/**
+	 * @hidden
+	 * @author Jean-Philippe Dery (jeanphilippe.dery@gmail.com)
+	 * @since  0.2
+	 */
+	_onDeviceAnimationStart: function() {
+		this.deviceAnimating = true;
+	},
 
-			this.wrapperElement.addEvent('animationend', onBackgroundAnimationEnd);
-			this.wrapperElement.addClass('show-device');
+	/**
+	* @hidden
+	 * @author Jean-Philippe Dery (jeanphilippe.dery@gmail.com)
+	 * @since  0.2
+	 */
+	_onDeviceAnimationEnd: function() {
+		this.deviceAnimating = false;
+	},
 
+	/**
+	 * @author Jean-Philippe Dery (jeanphilippe.dery@gmail.com)
+	 * @since  0.2
+	 */
+	setDevice: function(name) {
+
+		if (this.deviceName === name)
 			return this;
+
+		if (this.device) {
+			this.device.teardown();
+			this.device = null;
 		}
 
-		return apply();
+		var device = Moobile.Simulator.Device[name];
+		if (device === undefined) {
+			throw new Error('Device ' + name + ' does not exists.');
+		}
+
+		this.device = new device(this);
+		this.deviceElement.setStyle('height', this.device.getSize().y);
+		this.deviceElement.setStyle('width', this.device.getSize().x);
+		this.device.setup();
+
+		this.deviceName = name;
+
+		this.fireEvent('devicechange', name);
+
+		return this;
+	},
+
+	/**
+	 * @author Jean-Philippe Dery (jeanphilippe.dery@gmail.com)
+	 * @since  0.1
+	 */
+	setDeviceOrientationAnimated: function(orientation) {
+
+		if (this.deviceAnimating || this.deviceOrientation === orientation)
+			return this;
+
+		var onPlay = function(animation) {
+			if (animation.getName() === '2') this.setDeviceOrientation(orientation);
+		}.bind(this);
+
+		var anim = new Animation.List();
+		anim.addEvent('play', onPlay);
+		anim.addEvent('start', this.bound('_onDeviceAnimationStart'));
+		anim.addEvent('end', this.bound('_onDeviceAnimationEnd'));
+
+		switch (orientation) {
+
+			case 'portrait':
+				anim.setAnimation('1', new Animation(this.deviceElement).setAnimationClass('rotate-device-portrait'));
+				anim.setAnimation('2', new Animation(this.screenElement).setAnimationClass('rotate-screen-portrait'));
+				break;
+
+			case 'landscape':
+				anim.setAnimation('1', new Animation(this.deviceElement).setAnimationClass('rotate-device-landscape'));
+				anim.setAnimation('2', new Animation(this.screenElement).setAnimationClass('rotate-screen-landscape'));
+				break;
+		}
+
+		anim.start();
+
+		return this;
+	},
+
+	/**
+	 * @author Jean-Philippe Dery (jeanphilippe.dery@gmail.com)
+	 * @since  0.2
+	 */
+	setDeviceOrientation: function(orientation) {
+
+		if (this.deviceOrientation === orientation)
+			return this;
+
+		this.deviceOrientation = orientation;
+
+		this.deviceElement.removeClass('portrait');
+		this.deviceElement.removeClass('landscape');
+		this.deviceElement.addClass(orientation);
+
+		this.fireEvent('deviceorientationchange', orientation);
+
+		return this;
+	},
+
+	/**
+	 * @author Jean-Philippe Dery (jeanphilippe.dery@gmail.com)
+	 * @since  0.1
+	 */
+	getDeviceOrientation: function() {
+		return this.deviceOrientation;
 	},
 
 	/**
@@ -230,7 +285,7 @@ Moobile.Simulator = new Class({
 	 * @since  0.2
 	 */
 	getDeviceName: function() {
-		return this._deviceName;
+		return this.deviceName;
 	},
 
 	/**
@@ -238,7 +293,7 @@ Moobile.Simulator = new Class({
 	 * @since  0.2
 	 */
 	getDeviceSize: function() {
-		return this._device.getSize();
+		return this.device.getSize();
 	},
 
 	/**
@@ -247,18 +302,23 @@ Moobile.Simulator = new Class({
 	 */
 	setDeviceOptions: function(options) {
 
-		if (this._device === null)
+		if (this.device === null)
 			return this;
 
-		var setOption = function(value, option) {
+		Object.each(options, function(value, option) {
 			this.setDeviceOption(option, value);
-		}.bind(this);
-
-		Object.each(options, setOption);
+		}, this);
 
 		return this;
 	},
 
+	/**
+	 * @author Jean-Philippe Dery (jeanphilippe.dery@gmail.com)
+	 * @since  0.2
+	 */
+	getDeviceOptions: function() {
+		return this.device ? this.device.getOptions() : null;
+	},
 
 	/**
 	 * @author Jean-Philippe Dery (jeanphilippe.dery@gmail.com)
@@ -266,14 +326,14 @@ Moobile.Simulator = new Class({
 	 */
 	setDeviceOption: function(option, value) {
 
-		if (this._device == null)
+		if (this.device == null)
 			return this;
 
-		var current = this._device.getOption(option);
+		var current = this.device.getOption(option);
 		if (current === value)
 			return this;
 
-		this._device.setOption(option, value);
+		this.device.setOption(option, value);
 
 		this.fireEvent('deviceoptionchange', [option, value]);
 
@@ -284,83 +344,8 @@ Moobile.Simulator = new Class({
 	 * @author Jean-Philippe Dery (jeanphilippe.dery@gmail.com)
 	 * @since  0.2
 	 */
-	getDeviceOptions: function() {
-		return this._device ? this._device.getOptions() : null;
-	},
-
-
-	/**
-	 * @author Jean-Philippe Dery (jeanphilippe.dery@gmail.com)
-	 * @since  0.2
-	 */
 	getDeviceOption: function(option) {
-		return this._device ? this._device.getOption(option) : null;
-	},
-
-	/**
-	 * @author Jean-Philippe Dery (jeanphilippe.dery@gmail.com)
-	 * @since  0.1
-	 */
-	setDeviceOrientation: function(orientation, animated) {
-
-		if (this._deviceAnimating || this._deviceOrientation === orientation)
-			return this;
-
-		var apply = function() {
-
-			this._deviceOrientation = orientation;
-
-			this.wrapperElement.removeClass('portrait');
-			this.wrapperElement.removeClass('landscape');
-			this.wrapperElement.addClass(orientation);
-
-			if (this._applicationWindow) {
-				this._applicationWindow.orientation     = orientation === 'portrait' ? 0 : 90;
-				this._applicationWindow.orientationName = orientation;
-				this._applicationWindow.fireEvent('rotate', orientation);
-			}
-
-			this.fireEvent('deviceorientationchange', orientation);
-
-			return this;
-
-		}.bind(this);
-
-		if (animated) {
-
-			var onWrapperRotationEnd = function(e) {
-				if (e.target !== this.wrapperElement) return;
-				apply();
-			}.bind(this);
-
-			var onContentRotationEnd = function(e) {
-				if (e.target !== this.contentElement) return;
-				this.contentElement.removeEvent('animationend', onContentRotationEnd)
-				this.wrapperElement.removeEvent('animationend', onWrapperRotationEnd);
-				this.wrapperElement.removeClass('rotate-portrait');
-				this.wrapperElement.removeClass('rotate-landscape');
-			}.bind(this);
-
-			this.contentElement.addEvent('animationend', onContentRotationEnd);
-			this.wrapperElement.addEvent('animationend', onWrapperRotationEnd);
-
-			switch (this._deviceOrientation) {
-				case 'portrait': this.wrapperElement.addClass('rotate-landscape'); break;
-				case 'landscape': this.wrapperElement.addClass('rotate-portrait'); break;
-			}
-
-			return this;
-		}
-
-		return apply();
-	},
-
-	/**
-	 * @author Jean-Philippe Dery (jeanphilippe.dery@gmail.com)
-	 * @since  0.1
-	 */
-	getDeviceOrientation: function() {
-		return this._deviceOrientation;
+		return this.device ? this.device.getOption(option) : null;
 	},
 
 	/**
@@ -369,14 +354,14 @@ Moobile.Simulator = new Class({
 	 */
 	setApplication: function(path) {
 
-		if (this._applicationPath === path)
+		if (this.applicationPath === path)
 			return this;
 
-		this._applicationPath = path;
-		this._applicationLoaded = false;
-		this._applicationWindow = null;
+		this.applicationPath = path;
+		this.applicationLoaded = false;
+		this.applicationWindow = null;
 
-		this.payloadElement.set('src', path + '?' + String.uniqueID());
+		this.iframeElement.set('src', path + '?' + String.uniqueID());
 
 		return this;
 	},
@@ -386,7 +371,7 @@ Moobile.Simulator = new Class({
 	 * @since  0.2
 	 */
 	getApplicationPath: function() {
-		return this._applicationPath;
+		return this.applicationPath;
 	},
 
 	/**
@@ -394,39 +379,39 @@ Moobile.Simulator = new Class({
 	 * @since  0.2
 	 */
 	getApplicationWindow: function() {
-		return this._applicationWindow;
+		return this.applicationWindow;
 	},
 
 	/**
 	 * @author Jean-Philippe Dery (jeanphilippe.dery@gmail.com)
 	 * @since  0.2
 	 */
-	getWrapperElement: function() {
-		return this.wrapperElement;
+	getDeviceElement: function() {
+		return this.deviceElement;
 	},
 
 	/**
 	 * @author Jean-Philippe Dery (jeanphilippe.dery@gmail.com)
 	 * @since  0.2
 	 */
-	getDisplayElement: function() {
-		return this.displayElement;
+	getFacadeElement: function() {
+		return this.facadeElement;
 	},
 
 	/**
 	 * @author Jean-Philippe Dery (jeanphilippe.dery@gmail.com)
 	 * @since  0.2
 	 */
-	getContentElement: function() {
-		return this.contentElement;
+	getScreenElement: function() {
+		return this.screenElement;
 	},
 
 	/**
 	 * @author Jean-Philippe Dery (jeanphilippe.dery@gmail.com)
 	 * @since  0.2
 	 */
-	getPayloadElement: function() {
-		return this.payloadElement;
+	getIframeElement: function() {
+		return this.iframeElement;
 	},
 
 	/**
@@ -435,10 +420,10 @@ Moobile.Simulator = new Class({
 	 * @since  0.2
 	 */
 	_onAppLoad: function() {
-		if (this._applicationLoaded === false) {
-			this._applicationLoaded = true;
-			this._applicationWindow = this.payloadElement.contentWindow;
-			this._device.applicationDidLoad();
+		if (this.applicationLoaded === false) {
+			this.applicationLoaded = true;
+			this.applicationWindow = this.iframeElement.contentWindow;
+			this.device.applicationDidLoad();
 		}
 	},
 
@@ -449,13 +434,13 @@ Moobile.Simulator = new Class({
 	 */
 	_onAppReady: function() {
 
-		if (this._applicationWindow === null) {
-			this._applicationWindow = this.payloadElement.contentWindow;
+		if (this.applicationWindow === null) {
+			this.applicationWindow = this.iframeElement.contentWindow;
 		}
 
-		this._applicationWindow.orientation     = this._deviceOrientation === 'portrait' ? 0 : 90;
-		this._applicationWindow.orientationName = this._deviceOrientation;
-		this._device.applicationDidStart();
+		this.applicationWindow.orientation     = this.deviceOrientation === 'portrait' ? 0 : 90;
+		this.applicationWindow.orientationName = this.deviceOrientation;
+		this.device.applicationDidStart();
 	}
 
 });

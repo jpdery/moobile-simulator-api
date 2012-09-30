@@ -23,3 +23,5 @@ sources:
   - "Source/Event/Event.CSS3.js"
   - "Source/Element/Element.Style.Vendor.js"
   - "Source/Simulator/Simulator.js"
+  - "Source/Animation/Animation.js"
+  - "Source/Animation/Animation.List.js"

@@ -19,11 +19,11 @@
 	width: 1956px;
 }
 
-.simulator .simulator-display {
+.simulator .simulator-facade {
 	height: 2048px;
 	width: 1536px;
 }
 
-.simulator.portrait .simulator-content {
+.simulator.portrait .simulator-screen {
 	zoom: 200%;
 }

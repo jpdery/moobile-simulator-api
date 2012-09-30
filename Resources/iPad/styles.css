@@ -2,11 +2,9 @@
 -----------------------------------------------------------------------------*/
 
 .simulator {
-	-webkit-border-radius: 58px;
-	   -moz-border-radius: 58px;
-	        border-radius: 58px;
 	background: url(ipad.jpg) no-repeat;
 	background-size: 978px 1268px;
+	border-radius: 58px;
 	height: 1268px;
 	padding-top: 123px;
 	padding-bottom: 121px;
@@ -18,6 +16,8 @@
 .simulator .simulator-glare {
 	-webkit-backface-visibility: hidden;
 	   -moz-backface-visibility: hidden;
+	    -ms-backface-visibility: hidden;
+	     -o-backface-visibility: hidden;
 	        backface-visibility: hidden;
 	background: url(ipad-glare.png) no-repeat top right;
     background-size: 527px 1191px;
@@ -31,40 +31,40 @@
 	z-index: 2000;
 }
 
-.simulator .simulator-display {
+.simulator .simulator-facade {
 	height: 1024px;
 	width: 768px;
 }
 
-.simulator.portrait .simulator-content {
+.simulator.portrait .simulator-screen {
 	height: 1024px;
 	width: 768px;
 }
 
-.simulator.landscape .simulator-content {
+.simulator.landscape .simulator-screen {
 	height: 768px;
 	margin-top: 128px;
 	margin-left: -128px;
 	width: 1024px;
 }
 
-.simulator.portrait .simulator-content iframe {
+.simulator.portrait .simulator-screen iframe {
 	height: 1004px;
 	width: 768px;
 }
 
-.simulator.landscape .simulator-content iframe {
+.simulator.landscape .simulator-screen iframe {
 	height: 748px;
 	width: 1024px;
 }
 
 /* Portrait With Safari Bar */
 
-.simulator.portrait.with-safari-bar .simulator-content iframe {	height: 928px; }
+.simulator.portrait.with-safari-bar .simulator-screen iframe {	height: 928px; }
 
 /* Landscape With Safari Bar */
 
-.simulator.landscape.with-safari-bar .simulator-content iframe {	height: 672px; }
+.simulator.landscape.with-safari-bar .simulator-screen iframe { height: 672px; }
 
 /* Safari Bar
 -----------------------------------------------------------------------------*/

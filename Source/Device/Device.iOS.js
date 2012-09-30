@@ -63,8 +63,8 @@ Moobile.Simulator.Device['iOS'] = new Class({
 
 		this.require('iOS/styles.css');
 
-		var wrapper = this.simulator.getWrapperElement();
-		var content = this.simulator.getContentElement();
+		var wrapper = this.simulator.getDeviceElement();
+		var content = this.simulator.getScreenElement();
 
 		this.glare = new Element('div.simulator-glare');
 		this.glare.inject(wrapper, 'top');

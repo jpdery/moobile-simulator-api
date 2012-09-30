@@ -13,17 +13,17 @@
 }
 
 .simulator .simulator-glare {
-	background: url(iphone-glare.png)  no-repeat; /* Must be here, FF11 */
+	background: url(iphone-glare.png)  no-repeat;
 	background-size: 720px 1452px;
 	height: 1452px;
 	width: 720px;
 }
 
-.simulator .simulator-display {
+.simulator .simulator-facade {
 	height: 960px;
 	width: 640px;
 }
 
-.simulator .simulator-content {
+.simulator .simulator-screen {
 	zoom: 200%;
 }

@@ -4,9 +4,7 @@
 .simulator {
 	background: url(iphone.png) no-repeat;
 	background-size: 382px 744px;
-	-webkit-border-radius: 58px;
-	   -moz-border-radius: 58px;
-	        border-radius: 58px;
+    border-radius: 58px;
 	height: 744px;
 	padding-top: 132px;
 	padding-bottom: 132px;
@@ -18,8 +16,10 @@
 .simulator .simulator-glare {
 	-webkit-backface-visibility: hidden;
 	   -moz-backface-visibility: hidden;
+	    -ms-backface-visibility: hidden;
+	     -o-backface-visibility: hidden;
 	        backface-visibility: hidden;
-	background: url(iphone-glare.png)  no-repeat; /* Must be here, FF11 */
+	background: url(iphone-glare.png)  no-repeat;
 	background-size: 360px 726px;
 	height: 726px;
 	opacity: 0.5;
@@ -31,44 +31,44 @@
 	z-index: 2000;
 }
 
-.simulator .simulator-display {
+.simulator .simulator-facade {
 	height: 480px;
 	width: 320px;
 }
 
-.simulator.portrait .simulator-content {
+.simulator.portrait .simulator-screen {
 	height: 480px;
 	width: 320px;
 }
 
-.simulator.landscape .simulator-content {
+.simulator.landscape .simulator-screen {
 	height: 320px;
 	margin-top: 80px;
 	margin-left: -80px;
 	width: 480px;
 }
 
-.simulator.portrait .simulator-content iframe {
+.simulator.portrait .simulator-screen iframe {
 	height: 460px;
 	width: 320px;
 }
 
-.simulator.landscape .simulator-content iframe {
+.simulator.landscape .simulator-screen iframe {
 	height: 300px;
 	width: 480px;
 }
 
 /* Portrait With Safari Bar, With Button Bar */
 
-.simulator.portrait.with-button-bar .simulator-content iframe { height: 416px; }
-.simulator.portrait.with-safari-bar .simulator-content iframe {	height: 400px; }
-.simulator.portrait.with-button-bar.with-safari-bar .simulator-content iframe { height: 356px; }
+.simulator.portrait.with-button-bar .simulator-screen iframe { height: 416px; }
+.simulator.portrait.with-safari-bar .simulator-screen iframe {	height: 400px; }
+.simulator.portrait.with-button-bar.with-safari-bar .simulator-screen iframe { height: 356px; }
 
 /* Landscape With Safari Bar, With Button Bar */
 
-.simulator.landscape.with-button-bar .simulator-content iframe { height: 268px; }
-.simulator.landscape.with-safari-bar .simulator-content iframe { height: 240px; }
-.simulator.landscape.with-button-bar.with-safari-bar .simulator-content iframe { height: 208px; }
+.simulator.landscape.with-button-bar .simulator-screen iframe { height: 268px; }
+.simulator.landscape.with-safari-bar .simulator-screen iframe { height: 240px; }
+.simulator.landscape.with-button-bar.with-safari-bar .simulator-screen iframe { height: 208px; }
 
 /* Safari Bar
 -----------------------------------------------------------------------------*/
