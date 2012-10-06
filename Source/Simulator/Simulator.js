@@ -352,7 +352,7 @@ Moobile.Simulator = new Class({
 		this.applicationWindow = null;
 		this.iframeElement.set('src', path + '?' + String.uniqueID());
 
-		this.fireEvent('applicationchange', path);
+		this.fireEvent('deviceapplicationchange', path);
 
 		return this;
 	},
@@ -444,7 +444,7 @@ Moobile.Simulator = new Class({
 		this.applicationWindow = this.iframeElement.contentWindow;
 		this.applicationWindow.orientation = this.deviceOrientation === 'portrait' ? 0 : 90;
 		this.applicationWindow.orientationName = this.deviceOrientation;
-		this.device.applicationDidStart();
+		this.device.applicationDidLoad();
 	}
 
 });

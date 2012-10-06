@@ -1,7 +1,7 @@
 /*
 ---
 
-name: Device.iPhone
+name: Device.iPhone4
 
 description:
 
@@ -14,12 +14,12 @@ requires:
 	- Device
 
 provides:
-	- Device.iPhone
+	- Device.iPhone4
 
 ...
 */
 
-Moobile.Simulator.Device['iPhone'] = new Class({
+Moobile.Simulator.Device['iPhone4'] = new Class({
 
 	Extends: Moobile.Simulator.Device['iOS'],
 
@@ -43,7 +43,7 @@ Moobile.Simulator.Device['iPhone'] = new Class({
 
 		this.parent();
 
-		this.require('iPhone/styles.css');
+		this.require('iPhone4/styles.css');
 
 		var payload = this.simulator.getIframeElement();
 		var wrapper = this.simulator.getDeviceElement();

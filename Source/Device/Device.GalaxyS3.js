@@ -1,7 +1,7 @@
 /*
 ---
 
-name: Device.iOS
+name: Device.GalaxyS3
 
 description:
 
@@ -14,12 +14,12 @@ requires:
 	- Device
 
 provides:
-	- Device.iOS
+	- Device.GalaxyS3
 
 ...
 */
 
-Moobile.Simulator.Device['iOS'] = new Class({
+Moobile.Simulator.Device['GalaxyS3'] = new Class({
 
 	Extends: Moobile.Simulator.Device,
 
@@ -35,23 +35,6 @@ Moobile.Simulator.Device['iOS'] = new Class({
 	 */
 	statusBar: null,
 
-	/**
-	 * @author Jean-Philippe Dery (jeanphilippe.dery@gmail.com)
-	 * @since  0.2
-	 */
-	statusBarTime: null,
-
-	/**
-	 * @author Jean-Philippe Dery (jeanphilippe.dery@gmail.com)
-	 * @since  0.2
-	 */
-	statusBarNetwork: null,
-
-	/**
-	 * @author Jean-Philippe Dery (jeanphilippe.dery@gmail.com)
-	 * @since  0.2
-	 */
-	statusBarBattery: null,
 
 	/**
 	 * @author Jean-Philippe Dery (jeanphilippe.dery@gmail.com)
@@ -61,7 +44,7 @@ Moobile.Simulator.Device['iOS'] = new Class({
 
 		this.parent();
 
-		this.require('iOS/styles.css');
+		this.require('GalaxyS3/styles.css');
 
 		var wrapper = this.simulator.getDeviceElement();
 		var content = this.simulator.getScreenElement();
@@ -70,22 +53,13 @@ Moobile.Simulator.Device['iOS'] = new Class({
 		this.glare.inject(wrapper, 'top');
 
 		this.statusBar = new Element('div.simulator-status-bar');
-		this.statusBarTime = new Element('div.simulator-status-bar-time');
-		this.statusBarNetwork = new Element('div.simulator-status-bar-network');
-		this.statusBarBattery = new Element('div.simulator-status-bar-battery');
-
 		this.statusBar.inject(content, 'top');
-		this.statusBarTime.inject(this.statusBar);
-		this.statusBarNetwork.inject(this.statusBar);
-		this.statusBarBattery.inject(this.statusBar);
 
 		this.defineOption('glare', 'Show Screen Glare', {
 			active: true,
 			enable:  function() { wrapper.removeClass('without-glare') },
 			disable: function() { wrapper.addClass('without-glare') }
 		});
-
-		this.clock();
 	},
 
 	/**
@@ -97,9 +71,6 @@ Moobile.Simulator.Device['iOS'] = new Class({
 		this.glare = null;
 		this.statusBar.destroy();
 		this.statusBar = null;
-		this.statusBarTime = null;
-		this.statusBarNetwork = null;
-		this.statusBarBattery = null;
 		this.parent();
 	},
 
@@ -107,27 +78,11 @@ Moobile.Simulator.Device['iOS'] = new Class({
 	 * @author Jean-Philippe Dery (jeanphilippe.dery@gmail.com)
 	 * @since  0.2
 	 */
-	clock: function() {
-
-		var time = new Date()
-		var hh = time.getHours()
-		var mm = time.getMinutes()
-		var am = "AM";
-		if (hh >= 12) {
-			hh = hh - 12;
-			am = "PM";
-		}
-		if (hh == 0) {
-			hh = 12;
-		}
-		if (mm < 10) {
-			mm = "0" + mm;
-		}
-
-		if (this.statusBar) {
-			this.statusBar.getElement('.simulator-status-bar-time').set('html', hh + ":" + mm + " " + am);
-			this.clock.delay(5000, this);
-		}
+	getSize: function() {
+		return {
+			x: 418,
+			y: 812
+		};
 	}
 
 });
