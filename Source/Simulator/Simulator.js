@@ -167,6 +167,8 @@ Moobile.Simulator = new Class({
 		animation.addEvent('play', onPlay);
 		animation.start();
 
+		this.fireEvent('beforedevicechange', name);
+
 		return this;
 	},
 
@@ -229,6 +231,8 @@ Moobile.Simulator = new Class({
 
 		animation.addEvent('play', onPlay);
 		animation.start();
+
+		this.fireEvent('beforedeviceorientationchange', orientation);
 
 		return this;
 	},
