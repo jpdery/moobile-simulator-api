@@ -128,6 +128,8 @@ Moobile.Simulator = new Class({
 		this.screenElement = new Element('div.simulator-screen').inject(this.facadeElement);
 		this.iframeElement = new Element('iframe[scrolling=no]').inject(this.screenElement);
 
+		this.iframeElement.addEvent('load', this.bound('_onApplicationLoad'));
+
 		return this;
 	},
 
@@ -136,11 +138,14 @@ Moobile.Simulator = new Class({
 	 * @since  0.2
 	 */
 	destroy: function() {
+
+		this.iframeElement.removeEvent('load', this.bound('_onApplicationLoad'));
+		this.iframeElement = null;
+
 		this.deviceElement.destroy();
 		this.deviceElement = null;
 		this.facadeElement = null;
 		this.screenElement = null;
-		this.iframeElement = null;
 	},
 
 	/**
@@ -152,37 +157,17 @@ Moobile.Simulator = new Class({
 		if (this.deviceAnimating || this.deviceName === name)
 			return this;
 
-		var onPlay = function(animation) {
-			if (animation.getName() === '2') this.setDevice(name);
+		var onPlay = function(anim) {
+			if (anim === '2') this.setDevice(name);
 		}.bind(this);
 
-		var anim = new Animation.List();
-		anim.addEvent('play', onPlay);
-		anim.addEvent('start', this.bound('_onDeviceAnimationStart'));
-		anim.addEvent('end', this.bound('_onDeviceAnimationEnd'));
-		anim.setAnimation('1', new Animation(this.deviceElement).setAnimationClass('hide-device'));
-		anim.setAnimation('2', new Animation(this.deviceElement).setAnimationClass('show-device'));
-		anim.start();
+		var animation = this._createAnimationList();
+		animation.setAnimation('1', new Animation(this.deviceElement).setAnimationClass('hide-device'));
+		animation.setAnimation('2', new Animation(this.deviceElement).setAnimationClass('show-device'));
+		animation.addEvent('play', onPlay);
+		animation.start();
 
 		return this;
-	},
-
-	/**
-	 * @hidden
-	 * @author Jean-Philippe Dery (jeanphilippe.dery@gmail.com)
-	 * @since  0.2
-	 */
-	_onDeviceAnimationStart: function() {
-		this.deviceAnimating = true;
-	},
-
-	/**
-	* @hidden
-	 * @author Jean-Philippe Dery (jeanphilippe.dery@gmail.com)
-	 * @since  0.2
-	 */
-	_onDeviceAnimationEnd: function() {
-		this.deviceAnimating = false;
 	},
 
 	/**
@@ -225,29 +210,25 @@ Moobile.Simulator = new Class({
 		if (this.deviceAnimating || this.deviceOrientation === orientation)
 			return this;
 
-		var onPlay = function(animation) {
-			if (animation.getName() === '2') this.setDeviceOrientation(orientation);
-		}.bind(this);
+		var onPlay = function(name) {
+			if (name === '2') this.setDeviceOrientation(orientation);
+		}.bind(this)
 
-		var anim = new Animation.List();
-		anim.addEvent('play', onPlay);
-		anim.addEvent('start', this.bound('_onDeviceAnimationStart'));
-		anim.addEvent('end', this.bound('_onDeviceAnimationEnd'));
+		var animation = this._createAnimationList();
 
 		switch (orientation) {
-
 			case 'portrait':
-				anim.setAnimation('1', new Animation(this.deviceElement).setAnimationClass('rotate-device-portrait'));
-				anim.setAnimation('2', new Animation(this.screenElement).setAnimationClass('rotate-screen-portrait'));
+				animation.setAnimation('1', new Animation(this.deviceElement).setAnimationClass('rotate-device-portrait'));
+				animation.setAnimation('2', new Animation(this.screenElement).setAnimationClass('rotate-screen-portrait'));
 				break;
-
 			case 'landscape':
-				anim.setAnimation('1', new Animation(this.deviceElement).setAnimationClass('rotate-device-landscape'));
-				anim.setAnimation('2', new Animation(this.screenElement).setAnimationClass('rotate-screen-landscape'));
+				animation.setAnimation('1', new Animation(this.deviceElement).setAnimationClass('rotate-device-landscape'));
+				animation.setAnimation('2', new Animation(this.screenElement).setAnimationClass('rotate-screen-landscape'));
 				break;
 		}
 
-		anim.start();
+		animation.addEvent('play', onPlay);
+		animation.start();
 
 		return this;
 	},
@@ -266,6 +247,12 @@ Moobile.Simulator = new Class({
 		this.deviceElement.removeClass('portrait');
 		this.deviceElement.removeClass('landscape');
 		this.deviceElement.addClass(orientation);
+
+		if (this.applicationWindow) {
+			this.applicationWindow.orientation = orientation === 'portrait' ? 0 : 90;
+			this.applicationWindow.orientationName = orientation;
+			this.applicationWindow.fireEvent('orientationchange');
+		}
 
 		this.fireEvent('deviceorientationchange', orientation);
 
@@ -358,10 +345,10 @@ Moobile.Simulator = new Class({
 			return this;
 
 		this.applicationPath = path;
-		this.applicationLoaded = false;
 		this.applicationWindow = null;
-
 		this.iframeElement.set('src', path + '?' + String.uniqueID());
+
+		this.fireEvent('applicationchange', path);
 
 		return this;
 	},
@@ -419,12 +406,11 @@ Moobile.Simulator = new Class({
 	 * @author Jean-Philippe Dery (jeanphilippe.dery@gmail.com)
 	 * @since  0.2
 	 */
-	_onAppLoad: function() {
-		if (this.applicationLoaded === false) {
-			this.applicationLoaded = true;
-			this.applicationWindow = this.iframeElement.contentWindow;
-			this.device.applicationDidLoad();
-		}
+	_createAnimationList: function() {
+		var list = new Animation.List();
+		list.addEvent('start', this.bound('_onDeviceAnimationStart'));
+		list.addEvent('end', this.bound('_onDeviceAnimationEnd'));
+		return list;
 	},
 
 	/**
@@ -432,13 +418,27 @@ Moobile.Simulator = new Class({
 	 * @author Jean-Philippe Dery (jeanphilippe.dery@gmail.com)
 	 * @since  0.2
 	 */
-	_onAppReady: function() {
+	_onDeviceAnimationStart: function() {
+		this.deviceAnimating = true;
+	},
 
-		if (this.applicationWindow === null) {
-			this.applicationWindow = this.iframeElement.contentWindow;
-		}
+	/**
+	 * @hidden
+	 * @author Jean-Philippe Dery (jeanphilippe.dery@gmail.com)
+	 * @since  0.2
+	 */
+	_onDeviceAnimationEnd: function() {
+		this.deviceAnimating = false;
+	},
 
-		this.applicationWindow.orientation     = this.deviceOrientation === 'portrait' ? 0 : 90;
+	/**
+	 * @hidden
+	 * @author Jean-Philippe Dery (jeanphilippe.dery@gmail.com)
+	 * @since  0.2
+	 */
+	_onApplicationLoad: function() {
+		this.applicationWindow = this.iframeElement.contentWindow;
+		this.applicationWindow.orientation = this.deviceOrientation === 'portrait' ? 0 : 90;
 		this.applicationWindow.orientationName = this.deviceOrientation;
 		this.device.applicationDidStart();
 	}

@@ -306,7 +306,7 @@ Animation.List = new Class({
 	 * @since  0.1.0
 	 */
 	onAnimationStart: function() {
-		this.fireEvent('play', this.animations[this.currentAnimationIndex]);
+		this.fireEvent('play', this.animations[this.currentAnimationIndex].getName());
 	},
 
 	/**
@@ -315,7 +315,7 @@ Animation.List = new Class({
 	 * @since  0.1.0
 	 */
 	onAnimationStop: function() {
-		this.fireEvent('stop', this.animations[this.currentAnimationIndex]);
+		this.fireEvent('stop', this.animations[this.currentAnimationIndex].getName());
 	},
 
 	/**

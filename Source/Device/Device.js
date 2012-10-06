@@ -131,14 +131,6 @@ Moobile.Simulator.Device = new Class({
 	 * @author Jean-Philippe Dery (jeanphilippe.dery@gmail.com)
 	 * @since  0.2
 	 */
-	applicationDidStart: function() {
-
-	},
-
-	/**
-	 * @author Jean-Philippe Dery (jeanphilippe.dery@gmail.com)
-	 * @since  0.2
-	 */
 	defineOption: function(id, title, options) {
 
 		this.options[id] = {
