@@ -340,8 +340,8 @@ var Animation = new Class({
 			return this;
 
 		this._running = false;
-		this.detach();
 		this.fireEvent('stop');
+		this.detach();
 
 		return this;
 	},
