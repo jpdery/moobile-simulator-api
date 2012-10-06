@@ -16,12 +16,7 @@
 	background: url(galaxys3-glare.png)  no-repeat;
 	background-size: 418px 812px;
 	height: 812px;
-	left: 0px;
-	pointer-events: none;
-	position: absolute;
-	top: 0px;
 	width: 418px;
-	z-index: 100;
 }
 
 .simulator.without-glare .simulator-glare {
@@ -46,12 +41,12 @@
 }
 
 .simulator.portrait .simulator-screen iframe {
-	height: 590px;
-	width: 320px;
+	height: 615px;
+	width: 360px;
 }
 
 .simulator.landscape .simulator-screen iframe {
-	height: 310px;
+	height: 345px;
 	width: 640px;
 }
 
