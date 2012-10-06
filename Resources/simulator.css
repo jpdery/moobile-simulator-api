@@ -17,6 +17,14 @@
 	position: relative;
 }
 
+.simulator .simulator-glare {
+	left: 0px;
+	position: absolute;
+	pointer-events: none;
+	top: 0px;
+	z-index: 100;
+}
+
 .simulator .simulator-facade {
 	-webkit-box-sizing: border-box;
 	   -moz-box-sizing: border-box;

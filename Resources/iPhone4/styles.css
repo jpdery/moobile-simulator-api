@@ -4,7 +4,6 @@
 .simulator {
 	background: url(iphone.png) no-repeat;
 	background-size: 382px 744px;
-    border-radius: 58px;
 	height: 744px;
 	padding-top: 132px;
 	padding-bottom: 132px;
@@ -14,21 +13,10 @@
 }
 
 .simulator .simulator-glare {
-	-webkit-backface-visibility: hidden;
-	   -moz-backface-visibility: hidden;
-	    -ms-backface-visibility: hidden;
-	     -o-backface-visibility: hidden;
-	        backface-visibility: hidden;
 	background: url(iphone-glare.png)  no-repeat;
-	background-size: 360px 726px;
-	height: 726px;
-	opacity: 0.5;
-	position: absolute;
-	pointer-events: none;
-	top: 8px;
-	right: 6px;
-	width: 360px;
-	z-index: 2000;
+	background-size: 382px 744px;
+	height: 744px;
+	width: 382px;
 }
 
 .simulator .simulator-facade {

@@ -13,20 +13,15 @@
 }
 
 .simulator .simulator-glare {
-	-webkit-backface-visibility: hidden;
-	   -moz-backface-visibility: hidden;
-	    -ms-backface-visibility: hidden;
-	     -o-backface-visibility: hidden;
-	        backface-visibility: hidden;
 	background: url(galaxys3-glare.png)  no-repeat;
 	background-size: 418px 812px;
 	height: 812px;
-	opacity: 1;
-	position: absolute;
+	left: 0px;
 	pointer-events: none;
+	position: absolute;
 	top: 0px;
 	width: 418px;
-	z-index: 2000;
+	z-index: 100;
 }
 
 .simulator.without-glare .simulator-glare {

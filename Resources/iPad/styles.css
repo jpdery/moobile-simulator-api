@@ -2,33 +2,21 @@
 -----------------------------------------------------------------------------*/
 
 .simulator {
-	background: url(ipad.jpg) no-repeat;
-	background-size: 978px 1268px;
-	border-radius: 58px;
-	height: 1268px;
-	padding-top: 123px;
-	padding-bottom: 121px;
-	padding-left: 105px;
-	padding-right: 105px;
-	width: 978px;
+	background: url(ipad.png) no-repeat;
+	background-size: 966px 1255px;
+	height: 1255px;
+	padding-top: 115px;
+	padding-bottom: 115px;
+	padding-left: 100px;
+	padding-right: 98px;
+	width: 966px;
 }
 
 .simulator .simulator-glare {
-	-webkit-backface-visibility: hidden;
-	   -moz-backface-visibility: hidden;
-	    -ms-backface-visibility: hidden;
-	     -o-backface-visibility: hidden;
-	        backface-visibility: hidden;
 	background: url(ipad-glare.png) no-repeat top right;
-    background-size: 527px 1191px;
-	height: 1268px;
-	opacity: 0.5;
-	position: absolute;
-	pointer-events: none;
-	top: 10px;
-	right: 10px;
-	width: 978px;
-	z-index: 2000;
+    background-size: 966px 1255px;
+	height: 1255px;
+	width: 966px;
 }
 
 .simulator .simulator-facade {

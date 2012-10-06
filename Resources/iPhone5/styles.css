@@ -13,10 +13,9 @@
 }
 
 .simulator .simulator-glare {
+	background: url(iphone-glare.png) no-repeat;
 	background-size: 382px 801px;
 	height: 801px;
-	left: 0px;
-	top: 0px;
 	width: 382px;
 }
 
