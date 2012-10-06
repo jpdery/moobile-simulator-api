@@ -14,7 +14,9 @@
 	        box-sizing: border-box;
 	font-family: "Helvetica Neue", "Helvetica", Sans-Serif;
 	font-weight: normal;
+	height: 0px;
 	position: relative;
+	width: 0px;
 }
 
 .simulator .simulator-glare {
