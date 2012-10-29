@@ -75,7 +75,7 @@ Moobile.Simulator.Device['iPad'] = new Class({
 	getSize: function() {
 		return {
 			x: 966,
-			y: 1255
+			y: 1256
 		};
 	}
 
